@@ -195,19 +195,15 @@ export const Weather = () => {
                                   ? convertNow(
                                       'f',
                                       meanTemp(
-                                        day.Temperature.Temperature.Maximum
-                                          .Value,
-                                        day.Temperature.Temperature.Minimum
-                                          .Value
+                                        day.Temperature.Maximum.Value,
+                                        day.Temperature.Minimum.Value
                                       )
                                     )
                                   : convertNow(
                                       'c',
                                       meanTemp(
-                                        day.Temperature.Temperature.Maximum
-                                          .Value,
-                                        day.Temperature.Temperature.Minimum
-                                          .Value
+                                        day.Temperature.Maximum.Value,
+                                        day.Temperature.Minimum.Value
                                       )
                                     )}
                               </Typography>
