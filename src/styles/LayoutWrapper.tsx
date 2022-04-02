@@ -9,9 +9,8 @@ export const LayoutWrapper = styled.div<StyleProps>`
     darkMode
       ? `  .content {
   min-height: 100vh;
-  background-image: url(${dark});
-  background-size: fit;
-  background-repeat: no-repeat;
+  background: rgb(255,225,51);
+  background: linear-gradient(90deg, rgba(255,225,51,1) 0%, rgba(174,0,255,1) 50%, rgba(0,57,255,1) 100%);
 
 }
 .MuiTypography-root {
@@ -30,16 +29,15 @@ export const LayoutWrapper = styled.div<StyleProps>`
       : `  .content {
 
   min-height: 100vh;
-  background-image: url(${light});
-  background-size: fit;
-  background-repeat: no-repeat;
+  background: rgb(255,225,51);
+  background: linear-gradient(90deg, rgba(255,225,51,1) 0%, rgba(246,255,0,1) 64%, rgba(221,154,39,1) 100%);
 
 }
 .MuiTypography-root {
   font-family:  Cursive,Roboto;
 }
 .MuiAppBar-colorDefault {
-  background-color: #FED43F;
+  background-color:#dd9a27;
   transition: all 0.1s linear 0s;
 }
 .footer{

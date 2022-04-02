@@ -61,10 +61,10 @@ export const FavWeatherItem = (props: Props) => {
   );
 
   return (
-    <Grid item xs={6} md={4} xl={4}>
+    <Grid item xs={6} md={5} xl={5}>
       {currentWeather ? (
         <Card>
-          <Grid container spacing={5} justifyContent="center">
+          <Grid container spacing={3} justifyContent="center">
             <Grid item xs={12} md={6} xl={6}>
               <Typography margin="10px" variant="h5" component="h5">
                 {location.LocalizedName} - {props.favorite}

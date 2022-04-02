@@ -12,6 +12,7 @@ import FormGroup from '@mui/material/FormGroup';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { Store } from '../Store/Provider';
+import { Grid } from '@mui/material';
 
 export const Navbar: React.FC = () => {
   const { state, dispatch } = React.useContext(Store);
@@ -27,16 +28,21 @@ export const Navbar: React.FC = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Sharp
           </Typography>
-          <Button color="inherit">
-            <NavLinkWrapper to="/">
-              <Typography>Weather</Typography>
-            </NavLinkWrapper>
-          </Button>
-          <Button color="inherit">
-            <NavLinkWrapper to="favorites">
-              <Typography>Favorites</Typography>
-            </NavLinkWrapper>
-          </Button>
+          <Grid container spacing={3} justifyContent="flex-end">
+            <Grid item>
+              <Button color="inherit">
+                <NavLinkWrapper to="/">
+                  <Typography>Weather</Typography>
+                </NavLinkWrapper>
+              </Button>
+
+              <Button color="inherit">
+                <NavLinkWrapper to="favorites">
+                  <Typography>Favorites</Typography>
+                </NavLinkWrapper>
+              </Button>
+            </Grid>
+          </Grid>
           <FormGroup>
             <FormControlLabel
               control={
