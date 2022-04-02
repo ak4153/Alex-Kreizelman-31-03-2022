@@ -22,6 +22,7 @@ import DefaultWeather from '../types/DefaultWeather';
 import Clock from '../components/TickingClock';
 import { useSnackbar } from 'notistack';
 import showSnackBar from '../utils/showSnackBar';
+import { meanTemp, convertNow } from '../utils/tempConversion';
 // const autocompleteUrl = urls.autoCompleteUrl;
 // "&q=32.0679%2C34.7604"
 
@@ -51,7 +52,6 @@ export const Weather = () => {
           .get(forecastsUrl + res.data.Key + apiKey)
           .then((result) => {
             setDefaultWeather(result.data);
-           
           })
           .catch((err) => showSnackBar(enqueueSnackbar, action));
       })
@@ -138,14 +138,26 @@ export const Weather = () => {
                             variant="h4"
                             component="h4"
                           >
-                           
-                            {cityWeather.city} -{' '}
-                            {(cityWeather.foreCast.DailyForecasts[0].Temperature
-                              .Maximum.Value +
-                              cityWeather.foreCast.DailyForecasts[0].Temperature
-                                .Minimum.Value) /
-                              2}{' '}
-                            F
+                            {cityWeather.city} - {}
+                            {state.isCelsius
+                              ? convertNow(
+                                  'f',
+                                  meanTemp(
+                                    cityWeather.foreCast.DailyForecasts[0]
+                                      .Temperature.Maximum.Value,
+                                    cityWeather.foreCast.DailyForecasts[0]
+                                      .Temperature.Minimum.Value
+                                  )
+                                )
+                              : convertNow(
+                                  'c',
+                                  meanTemp(
+                                    cityWeather.foreCast.DailyForecasts[0]
+                                      .Temperature.Maximum.Value,
+                                    cityWeather.foreCast.DailyForecasts[0]
+                                      .Temperature.Minimum.Value
+                                  )
+                                )}
                           </Typography>
                         </Grid>
                         <Grid item>
@@ -179,10 +191,25 @@ export const Weather = () => {
 
                             <Grid item xs={12} md={12} xl={12}>
                               <Typography>
-                                {(day.Temperature.Maximum.Value +
-                                  day.Temperature.Minimum.Value) /
-                                  2}
-                                F
+                                {state.isCelsius
+                                  ? convertNow(
+                                      'f',
+                                      meanTemp(
+                                        day.Temperature.Temperature.Maximum
+                                          .Value,
+                                        day.Temperature.Temperature.Minimum
+                                          .Value
+                                      )
+                                    )
+                                  : convertNow(
+                                      'c',
+                                      meanTemp(
+                                        day.Temperature.Temperature.Maximum
+                                          .Value,
+                                        day.Temperature.Temperature.Minimum
+                                          .Value
+                                      )
+                                    )}
                               </Typography>
                             </Grid>
                           </Grid>
@@ -219,6 +246,25 @@ export const Weather = () => {
                               ? `Tel Aviv `
                               : state.selectedFavorite.locationName}{' '}
                             -{' '}
+                            {state.isCelsius
+                              ? convertNow(
+                                  'f',
+                                  meanTemp(
+                                    defaultWeather.DailyForecasts.at(0)
+                                      .Temperature!.Maximum.Value,
+                                    defaultWeather.DailyForecasts.at(0)
+                                      .Temperature!.Minimum.Value
+                                  )
+                                )
+                              : convertNow(
+                                  'c',
+                                  meanTemp(
+                                    defaultWeather.DailyForecasts.at(0)
+                                      .Temperature!.Maximum.Value,
+                                    defaultWeather.DailyForecasts.at(0)
+                                      .Temperature!.Minimum.Value
+                                  )
+                                )}
                           </Typography>
                         </Grid>
                         <Grid item>
@@ -253,10 +299,21 @@ export const Weather = () => {
 
                             <Grid item xs={12} md={12} xl={12}>
                               <Typography>
-                                {(day.Temperature.Maximum.Value +
-                                  day.Temperature.Minimum.Value) /
-                                  2}
-                                F
+                                {state.isCelsius
+                                  ? convertNow(
+                                      'f',
+                                      meanTemp(
+                                        day.Temperature!.Maximum.Value,
+                                        day.Temperature!.Minimum.Value
+                                      )
+                                    )
+                                  : convertNow(
+                                      'c',
+                                      meanTemp(
+                                        day.Temperature!.Maximum.Value,
+                                        day.Temperature!.Minimum.Value
+                                      )
+                                    )}
                               </Typography>
                             </Grid>
                           </Grid>

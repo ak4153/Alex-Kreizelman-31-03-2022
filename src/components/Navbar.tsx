@@ -13,6 +13,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { Store } from '../Store/Provider';
 import { Grid } from '@mui/material';
+import UnitSwitch from './UnitSwitch';
 
 export const Navbar: React.FC = () => {
   const { state, dispatch } = React.useContext(Store);
@@ -43,18 +44,25 @@ export const Navbar: React.FC = () => {
               </Button>
             </Grid>
           </Grid>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  onChange={handleDarkMode}
-                  checked={state.darkMode}
-                  aria-label="login switch"
-                />
-              }
-              label={state.darkMode ? <DarkModeIcon /> : <LightModeIcon />}
-            />
-          </FormGroup>
+          <Grid item>
+            {' '}
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={handleDarkMode}
+                    checked={state.darkMode}
+                    aria-label="login switch"
+                  />
+                }
+                label={state.darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+              />
+            </FormGroup>
+          </Grid>
+          <Grid item>
+            {' '}
+            <UnitSwitch />
+          </Grid>
         </Toolbar>
       </AppBar>
     </NavBarWrapper>

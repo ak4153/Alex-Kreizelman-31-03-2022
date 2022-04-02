@@ -92,7 +92,9 @@ export const FavWeatherItem = (props: Props) => {
 
               <Grid xs={12} md={12} xl={12} item>
                 <Typography textAlign={'center'}>
-                  {currentWeather.Temperature.Imperial.Value} F
+                  {state.isCelsius
+                    ? `${currentWeather.Temperature.Metric.Value}°C`
+                    : `${currentWeather.Temperature.Imperial.Value}°F`}
                 </Typography>
               </Grid>
             </Grid>

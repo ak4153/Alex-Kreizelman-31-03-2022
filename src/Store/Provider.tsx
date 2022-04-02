@@ -11,6 +11,9 @@ const initialState: InitialState = {
   darkMode: Cookies.get('darkMode')
     ? JSON.parse(Cookies.get('darkMode')!)
     : false,
+  isCelsius: Cookies.get('isCelsius')
+    ? JSON.parse(Cookies.get('isCelsius')!)
+    : false,
 };
 
 const reducer = (state: InitialState, action: any) => {
@@ -57,6 +60,10 @@ const reducer = (state: InitialState, action: any) => {
       Cookies.set('darkMode', JSON.stringify(setDarkMode));
 
       return { ...state, darkMode: setDarkMode };
+    case 'SET_UNIT':
+      let setUnit = state.isCelsius ? false : true;
+      Cookies.set('isCelsius', JSON.stringify(setUnit));
+      return { ...state, isCelsius: setUnit };
 
     default:
       return { ...state };

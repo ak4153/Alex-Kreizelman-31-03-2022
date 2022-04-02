@@ -1,5 +1,5 @@
 interface DefaultWeather {
   Headline: any;
-  DailyForecasts: [];
+  DailyForecasts: any;
 }
 export default DefaultWeather;
