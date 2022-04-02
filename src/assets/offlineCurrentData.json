@@ -1,0 +1,49 @@
+[{
+        "LocalObservationDateTime": "2022-04-01T16:43:00+03:00",
+        "EpochTime": 1648820580,
+        "WeatherText": "Cloudy",
+        "WeatherIcon": 7,
+        "HasPrecipitation": false,
+        "PrecipitationType": null,
+        "IsDayTime": true,
+        "Temperature": {
+            "Metric": {
+                "Value": 22.9,
+                "Unit": "C",
+                "UnitType": 17
+            },
+            "Imperial": {
+                "Value": 73,
+                "Unit": "F",
+                "UnitType": 18
+            }
+        },
+        "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/current-weather/295146?lang=en-us",
+        "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/current-weather/295146?lang=en-us",
+        "key": 295146
+    },
+    {
+        "LocalObservationDateTime": "2022-04-01T16:43:00+03:00",
+        "EpochTime": 1648820580,
+        "WeatherText": "Cloudy",
+        "WeatherIcon": 7,
+        "HasPrecipitation": false,
+        "PrecipitationType": null,
+        "IsDayTime": true,
+        "Temperature": {
+            "Metric": {
+                "Value": 22.9,
+                "Unit": "C",
+                "UnitType": 17
+            },
+            "Imperial": {
+                "Value": 73,
+                "Unit": "F",
+                "UnitType": 18
+            }
+        },
+        "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/current-weather/295146?lang=en-us",
+        "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/current-weather/295146?lang=en-us",
+        "key": 2951426
+    }
+]

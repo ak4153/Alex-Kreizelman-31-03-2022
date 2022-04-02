@@ -1,0 +1,106 @@
+[{
+        "Version": 1,
+        "Key": "3493236",
+        "Type": "City",
+        "Rank": 85,
+        "LocalizedName": "Israelite Bay",
+        "Country": {
+            "ID": "AU",
+            "LocalizedName": "Australia"
+        },
+        "AdministrativeArea": {
+            "ID": "WA",
+            "LocalizedName": "Western Australia"
+        }
+    },
+    {
+        "Version": 1,
+        "Key": "43543",
+        "Type": "City",
+        "Rank": 85,
+        "LocalizedName": "Israelândia",
+        "Country": {
+            "ID": "BR",
+            "LocalizedName": "Brazil"
+        },
+        "AdministrativeArea": {
+            "ID": "GO",
+            "LocalizedName": "Goiás"
+        }
+    },
+    {
+        "Version": 1,
+        "Key": "2727808",
+        "Type": "City",
+        "Rank": 85,
+        "LocalizedName": "Israel Pinheiro",
+        "Country": {
+            "ID": "BR",
+            "LocalizedName": "Brazil"
+        },
+        "AdministrativeArea": {
+            "ID": "MG",
+            "LocalizedName": "Minas Gerais"
+        }
+    },
+    {
+        "Version": 1,
+        "Key": "1016589",
+        "Type": "City",
+        "Rank": 85,
+        "LocalizedName": "Israelsdorf",
+        "Country": {
+            "ID": "DE",
+            "LocalizedName": "Germany"
+        },
+        "AdministrativeArea": {
+            "ID": "SH",
+            "LocalizedName": "Schleswig-Holstein"
+        }
+    },
+    {
+        "Version": 1,
+        "Key": "1057615",
+        "Type": "City",
+        "Rank": 85,
+        "LocalizedName": "Israel",
+        "Country": {
+            "ID": "MX",
+            "LocalizedName": "Mexico"
+        },
+        "AdministrativeArea": {
+            "ID": "CHP",
+            "LocalizedName": "Chiapas"
+        }
+    },
+    {
+        "Version": 1,
+        "Key": "3419818",
+        "Type": "City",
+        "Rank": 85,
+        "LocalizedName": "Israel",
+        "Country": {
+            "ID": "PH",
+            "LocalizedName": "Philippines"
+        },
+        "AdministrativeArea": {
+            "ID": "ZSI",
+            "LocalizedName": "Zamboanga Sibugay"
+        }
+    },
+    {
+        "Version": 1,
+        "Key": "2628738",
+        "Type": "City",
+        "Rank": 285,
+        "LocalizedName": "Israel Township",
+        "Country": {
+            "ID": "US",
+            "LocalizedName": "United States"
+        },
+        "AdministrativeArea": {
+            "ID": "OH",
+            "LocalizedName": "Ohio"
+        }
+    }
+]

@@ -1,0 +1,171 @@
+{
+    "foreCast": {
+        "Headline": {
+            "EffectiveDate": "2022-04-04T07:00:00+03:00",
+            "EffectiveEpochDate": 1649044800,
+            "Severity": 4,
+            "Text": "Noticeably cooler weather on the way Monday",
+            "Category": "cooler",
+            "EndDate": "2022-04-04T19:00:00+03:00",
+            "EndEpochDate": 1649088000,
+            "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?lang=en-us",
+            "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?lang=en-us"
+        },
+        "DailyForecasts": [{
+                "Date": "2022-04-01T07:00:00+03:00",
+                "EpochDate": 1648785600,
+                "Temperature": {
+                    "Minimum": {
+                        "Value": 54,
+                        "Unit": "F",
+                        "UnitType": 18
+                    },
+                    "Maximum": {
+                        "Value": 74,
+                        "Unit": "F",
+                        "UnitType": 18
+                    }
+                },
+                "Day": {
+                    "Icon": 7,
+                    "IconPhrase": "Cloudy",
+                    "HasPrecipitation": false
+                },
+                "Night": {
+                    "Icon": 12,
+                    "IconPhrase": "Showers",
+                    "HasPrecipitation": true,
+                    "PrecipitationType": "Rain",
+                    "PrecipitationIntensity": "Light"
+                },
+                "Sources": ["AccuWeather"],
+                "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=1&lang=en-us",
+                "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=1&lang=en-us"
+            },
+            {
+                "Date": "2022-04-02T07:00:00+03:00",
+                "EpochDate": 1648872000,
+                "Temperature": {
+                    "Minimum": {
+                        "Value": 49,
+                        "Unit": "F",
+                        "UnitType": 18
+                    },
+                    "Maximum": {
+                        "Value": 74,
+                        "Unit": "F",
+                        "UnitType": 18
+                    }
+                },
+                "Day": {
+                    "Icon": 6,
+                    "IconPhrase": "Mostly cloudy",
+                    "HasPrecipitation": false
+                },
+                "Night": {
+                    "Icon": 33,
+                    "IconPhrase": "Clear",
+                    "HasPrecipitation": false
+                },
+                "Sources": ["AccuWeather"],
+                "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=2&lang=en-us",
+                "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=2&lang=en-us"
+            },
+            {
+                "Date": "2022-04-03T07:00:00+03:00",
+                "EpochDate": 1648958400,
+                "Temperature": {
+                    "Minimum": {
+                        "Value": 41,
+                        "Unit": "F",
+                        "UnitType": 18
+                    },
+                    "Maximum": {
+                        "Value": 63,
+                        "Unit": "F",
+                        "UnitType": 18
+                    }
+                },
+                "Day": {
+                    "Icon": 13,
+                    "IconPhrase": "Mostly cloudy w/ showers",
+                    "HasPrecipitation": true,
+                    "PrecipitationType": "Rain",
+                    "PrecipitationIntensity": "Moderate"
+                },
+                "Night": {
+                    "Icon": 36,
+                    "IconPhrase": "Intermittent clouds",
+                    "HasPrecipitation": true,
+                    "PrecipitationType": "Rain",
+                    "PrecipitationIntensity": "Light"
+                },
+                "Sources": ["AccuWeather"],
+                "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=3&lang=en-us",
+                "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=3&lang=en-us"
+            },
+            {
+                "Date": "2022-04-04T07:00:00+03:00",
+                "EpochDate": 1649044800,
+                "Temperature": {
+                    "Minimum": {
+                        "Value": 34,
+                        "Unit": "F",
+                        "UnitType": 18
+                    },
+                    "Maximum": {
+                        "Value": 46,
+                        "Unit": "F",
+                        "UnitType": 18
+                    }
+                },
+                "Day": {
+                    "Icon": 12,
+                    "IconPhrase": "Showers",
+                    "HasPrecipitation": true,
+                    "PrecipitationType": "Rain",
+                    "PrecipitationIntensity": "Light"
+                },
+                "Night": {
+                    "Icon": 7,
+                    "IconPhrase": "Cloudy",
+                    "HasPrecipitation": false
+                },
+                "Sources": ["AccuWeather"],
+                "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=4&lang=en-us",
+                "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=4&lang=en-us"
+            },
+            {
+                "Date": "2022-04-05T07:00:00+03:00",
+                "EpochDate": 1649131200,
+                "Temperature": {
+                    "Minimum": {
+                        "Value": 39,
+                        "Unit": "F",
+                        "UnitType": 18
+                    },
+                    "Maximum": {
+                        "Value": 52,
+                        "Unit": "F",
+                        "UnitType": 18
+                    }
+                },
+                "Day": {
+                    "Icon": 3,
+                    "IconPhrase": "Partly sunny",
+                    "HasPrecipitation": false
+                },
+                "Night": {
+                    "Icon": 34,
+                    "IconPhrase": "Mostly clear",
+                    "HasPrecipitation": false
+                },
+                "Sources": ["AccuWeather"],
+                "MobileLink": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=5&lang=en-us",
+                "Link": "http://www.accuweather.com/en/ru/rostov-on-don/295146/daily-weather-forecast/295146?day=5&lang=en-us"
+            }
+        ]
+    },
+    "key": "295146",
+    "city": "Rostov-on-Don"
+}
