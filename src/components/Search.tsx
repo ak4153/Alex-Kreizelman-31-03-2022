@@ -1,18 +1,19 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useMemo } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
-
+import { Capture } from '../types/Capture';
 import { Button } from '@mui/material';
 import Weather from '../types/Weather';
-
+import _ from 'lodash';
 import urls from '../assets/urls.json';
-import apiKeyJson from '../assets/apiKey.json';
+
 import { useSnackbar } from 'notistack';
 import { Store } from '../Store/Provider';
-// const autocompleteUrl = urls.autoCompleteUrl;
-const apiKey = apiKeyJson.apiKey;
+import { AutoComplete } from '../types/AutoCompleteType';
+
+const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
 const autocompleteUrl = `${baseUrl}/locations/v1/cities/autocomplete${apiKey}&q=`;
@@ -23,8 +24,8 @@ interface Props {
 
 export default function SearchInput(props: Props) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [data, setData] = useState<any>();
-  const [capture, setCapture] = useState<Weather>();
+  const [data, setData] = useState<AutoComplete[]>([]);
+  const [capture, setCapture] = useState<Capture>();
   const [input, setInput] = useState<string>('');
   const { dispatch } = useContext(Store);
 
@@ -32,15 +33,18 @@ export default function SearchInput(props: Props) {
     axios
       .get(autocompleteUrl + input)
       .then((res) => {
-        setData((prevData: any) => (prevData = res.data));
+        setData((prevData) => (prevData = res.data));
       })
-      .catch((err) =>
-        enqueueSnackbar("Couldn't fetch data", {
-          variant: 'warning',
-          preventDuplicate: true,
-          action,
-        })
-      );
+      .catch((err) => {
+        {
+          console.clear();
+          enqueueSnackbar("Couldn't fetch data", {
+            variant: 'warning',
+            preventDuplicate: true,
+            action,
+          });
+        }
+      });
   }, [input]);
 
   useEffect(() => {
@@ -57,13 +61,14 @@ export default function SearchInput(props: Props) {
             (prevWeather: any) => (prevWeather = dataToSave)
           );
         })
-        .catch((err) =>
+        .catch((err) => {
+          console.clear();
           enqueueSnackbar("Couldn't fetch data", {
             variant: 'warning',
             preventDuplicate: true,
             action,
-          })
-        );
+          });
+        });
     }
   }, [capture]);
 
@@ -74,19 +79,18 @@ export default function SearchInput(props: Props) {
     }
   };
 
-  const onChangeInput = (e: any) => {
-    //checks for english letters
-    let res = /^[a-zA-Z]+$/.test(e.target.value);
+  const onChangeInput = _.debounce((e) => {
+    let res = /^[a-zA-Z ]+$/.test(e.target.value);
     if (res) {
-      setInput(e.target.value);
+      return setInput(e.target.value);
     } else {
-      enqueueSnackbar('English letters please', {
+      return enqueueSnackbar('English letters please', {
         variant: 'warning',
         preventDuplicate: true,
         action,
       });
     }
-  };
+  }, 500);
 
   //snackbar button
   const action = (key: any) => (
@@ -108,17 +112,14 @@ export default function SearchInput(props: Props) {
           id="free-solo-demo"
           freeSolo
           onChange={handleClick}
-          getOptionLabel={(data) =>
-            data.AdministrativeArea.LocalizedName + ' ' + data.Key
-          }
+          getOptionLabel={(data: AutoComplete) => data.LocalizedName}
           options={data ? data : []}
           isOptionEqualToValue={(option, value) =>
             option.Country.LocalizedName === value.Country.LocalizedName
           }
-          renderOption={(props: any, data) => (
+          renderOption={(props: any, data: AutoComplete) => (
             <Button {...props} key={Math.random()}>
-              {data.Country.LocalizedName}-
-              {data.AdministrativeArea.LocalizedName}
+              {data.Country.LocalizedName} - {data.LocalizedName}
             </Button>
           )}
           renderInput={(params) => (

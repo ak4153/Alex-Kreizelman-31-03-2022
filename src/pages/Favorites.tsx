@@ -1,14 +1,10 @@
 import React, { useContext } from 'react';
 import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
-import { Grid, Typography, CircularProgress } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Store } from '../Store/Provider';
 import { FavWeatherItem } from '../components/FavWeatherItem';
 
-import apiKeyJson from '../assets/apiKey.json';
-import urls from '../assets/urls.json';
 import { Link } from 'react-router-dom';
-
-const baseUrl = urls.baseUrl;
 
 export const Favorites = () => {
   const { state, dispatch } = useContext(Store);

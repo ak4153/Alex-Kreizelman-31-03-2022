@@ -17,30 +17,25 @@ import WeatherIcon from '../components/WeatherIcon';
 import FavoriteButton from '../components/FavoriteButton';
 import axios from 'axios';
 import urls from '../assets/urls.json';
-import apiKeyJson from '../assets/apiKey.json';
-import DefaultWeather from '../types/DefaultWeather';
+
 import Clock from '../components/TickingClock';
 import { useSnackbar } from 'notistack';
 import showSnackBar from '../utils/showSnackBar';
 import { meanTemp, convertNow } from '../utils/tempConversion';
-// const autocompleteUrl = urls.autoCompleteUrl;
-// "&q=32.0679%2C34.7604"
-
-const apiKey = apiKeyJson.apiKey;
+import { DailyForecast } from '../types/5dayForeCast';
+import { CityWeather } from '../types/CityWeather';
+const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
 const telAvivKey = 215854;
 const getLocationUrl = `${baseUrl}/locations/v1/cities/geoposition/search${apiKey}&q=`;
 
 export const Weather = () => {
-  const { state, dispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   //static value => change to dynaic
-  const [cityWeather, setCityWeather] = useState<any>();
-  const [defaultWeather, setDefaultWeather] = useState<DefaultWeather>({
-    Headline: {},
-    DailyForecasts: [],
-  });
+  const [cityWeather, setCityWeather] = useState<CityWeather>();
+  const [defaultWeather, setDefaultWeather] = useState<DailyForecast[]>([]);
 
   //axios get coords = success
   const success = (e: any) => {
@@ -51,11 +46,15 @@ export const Weather = () => {
         axios
           .get(forecastsUrl + res.data.Key + apiKey)
           .then((result) => {
-            setDefaultWeather(result.data);
+            setDefaultWeather(result.data.DailyForecasts);
           })
-          .catch((err) => showSnackBar(enqueueSnackbar, action));
+          .catch((err) => {
+            console.clear();
+            showSnackBar(enqueueSnackbar, action);
+          });
       })
       .catch((err) => {
+        console.clear();
         showSnackBar(enqueueSnackbar, action);
       });
   };
@@ -64,9 +63,10 @@ export const Weather = () => {
     axios
       .get(forecastsUrl + telAvivKey.toString() + apiKey)
       .then((res) => {
-        setDefaultWeather(res.data);
+        setDefaultWeather(res.data.DailyForecasts);
       })
       .catch((err) => {
+        console.clear();
         showSnackBar(enqueueSnackbar, action);
       });
   };
@@ -79,6 +79,7 @@ export const Weather = () => {
           setDefaultWeather(res.data);
         })
         .catch((err) => {
+          console.clear();
           showSnackBar(enqueueSnackbar, action);
         });
     } else {
@@ -116,7 +117,7 @@ export const Weather = () => {
           <Clock />
         </Grid>
 
-        {!cityWeather && defaultWeather.DailyForecasts.length < 1 ? (
+        {!cityWeather && !defaultWeather ? (
           <CircularProgress color="success" />
         ) : cityWeather ? (
           // display searched weather
@@ -217,6 +218,8 @@ export const Weather = () => {
               </Grid>
             </Grid>
           </Grid>
+        ) : defaultWeather.length < 1 ? (
+          ''
         ) : (
           //display default weather if nothing searched
 
@@ -246,19 +249,17 @@ export const Weather = () => {
                               ? convertNow(
                                   'f',
                                   meanTemp(
-                                    defaultWeather.DailyForecasts.at(0)
-                                      .Temperature!.Maximum.Value,
-                                    defaultWeather.DailyForecasts.at(0)
-                                      .Temperature!.Minimum.Value
+                                    defaultWeather[0].Temperature!.Maximum
+                                      .Value,
+                                    defaultWeather[0].Temperature!.Minimum.Value
                                   )
                                 )
                               : convertNow(
                                   'c',
                                   meanTemp(
-                                    defaultWeather.DailyForecasts.at(0)
-                                      .Temperature!.Maximum.Value,
-                                    defaultWeather.DailyForecasts.at(0)
-                                      .Temperature!.Minimum.Value
+                                    defaultWeather[0].Temperature!.Maximum
+                                      .Value,
+                                    defaultWeather[0].Temperature!.Minimum.Value
                                   )
                                 )}
                           </Typography>
@@ -277,7 +278,7 @@ export const Weather = () => {
                     </Grid>
                     <Grid item> </Grid>
                     <Grid xs={12} md={12} xl={12} item></Grid>
-                    {defaultWeather.DailyForecasts.map((day: any) => (
+                    {defaultWeather.map((day: any) => (
                       <Grid xs={12} md={2} xl={2} item key={Math.random()}>
                         <Card sx={{ margin: '15px' }}>
                           <Grid

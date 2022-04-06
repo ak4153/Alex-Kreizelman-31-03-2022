@@ -4,14 +4,14 @@ import axios from 'axios';
 import WeatherIcon from './WeatherIcon';
 import getDayOfWeek from '../utils/getDayOfWeek';
 import FavoriteButton from './FavoriteButton';
-import apiKeyJson from '../assets/apiKey.json';
+
 import urls from '../assets/urls.json';
 import { Store } from '../Store/Provider';
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import SkeletonLoad from '../components/Skeleton';
 import showSnackBar from '../utils/showSnackBar';
-const apiKey = apiKeyJson.apiKey;
+const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const currentconditionsUrl = `${baseUrl}/currentconditions/v1/`;
 const locationsUrl = `${baseUrl}/locations/v1/`;
@@ -23,6 +23,7 @@ export const FavWeatherItem = (props: Props) => {
   const { state, dispatch } = useContext<any>(Store);
   const [currentWeather, setCurrentWeather] = useState<any>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   useEffect(() => {
     if (props.favorite) {
       axios
@@ -30,14 +31,20 @@ export const FavWeatherItem = (props: Props) => {
         .then((res) => {
           setLocation((prevState: any) => (prevState = res.data));
         })
-        .catch((err) => showSnackBar(enqueueSnackbar, action));
+        .catch((err) => {
+          console.clear();
+          showSnackBar(enqueueSnackbar, action);
+        });
 
       axios
         .get(currentconditionsUrl + props.favorite + apiKey)
         .then((res) => {
           setCurrentWeather((prevState: any) => (prevState = res.data[0]));
         })
-        .catch((err) => showSnackBar(enqueueSnackbar, action));
+        .catch((err) => {
+          console.clear();
+          showSnackBar(enqueueSnackbar, action);
+        });
     }
   }, []);
 
@@ -92,7 +99,7 @@ export const FavWeatherItem = (props: Props) => {
 
               <Grid xs={12} md={12} xl={12} item>
                 <Typography textAlign={'center'}>
-                  {state.isCelsius
+                  {!state.isCelsius
                     ? `${currentWeather.Temperature.Metric.Value}°C`
                     : `${currentWeather.Temperature.Imperial.Value}°F`}
                 </Typography>

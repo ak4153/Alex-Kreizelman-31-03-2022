@@ -1,5 +1,4 @@
 {
     "baseUrl": "https://dataservice.accuweather.com",
-    "locationsUrl": "/locations/v1/",
-    "autoCompleteUrl": "https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=VxjVVhYc3wZKRPU0oOUoowE5mYcAPAax&q="
+    "locationsUrl": "/locations/v1/"
 }
