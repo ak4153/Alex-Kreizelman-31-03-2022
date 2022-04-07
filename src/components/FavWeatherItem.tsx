@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Card, Grid, Typography, Button } from '@mui/material';
-import axios from 'axios';
 import WeatherIcon from './WeatherIcon';
 import getDayOfWeek from '../utils/getDayOfWeek';
 import FavoriteButton from './FavoriteButton';
@@ -10,8 +9,9 @@ import { Store } from '../Store/Provider';
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import SkeletonLoad from '../components/Skeleton';
-import showSnackBar from '../utils/showSnackBar';
 import getRequest from '../utils/getRequest';
+import Location from '../types/Location';
+import CurrentWeather from '../types/CurrentWeather';
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const currentconditionsUrl = `${baseUrl}/currentconditions/v1/`;
@@ -20,9 +20,9 @@ interface Props {
   favorite: number;
 }
 export const FavWeatherItem = (props: Props) => {
-  const [location, setLocation] = useState<any>({});
+  const [location, setLocation] = useState<Location>();
   const { state, dispatch } = useContext<any>(Store);
-  const [currentWeather, setCurrentWeather] = useState<any>();
+  const [currentWeather, setCurrentWeather] = useState<CurrentWeather>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {

@@ -22,6 +22,7 @@ const getRequest = (url: string, options: Options) => {
   axios
     .get(url)
     .then((res) => {
+      console.log('res.data', res.data);
       if (options.page === 'searchComponent') {
         const dataToSave = {
           foreCast: res.data,
