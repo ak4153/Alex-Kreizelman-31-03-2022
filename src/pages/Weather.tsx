@@ -24,6 +24,8 @@ import showSnackBar from '../utils/showSnackBar';
 import { meanTemp, convertNow } from '../utils/tempConversion';
 import { DailyForecast } from '../types/5dayForeCast';
 import { CityWeather } from '../types/CityWeather';
+import enqueueAction from '../utils/enqueueAction';
+import getRequest from '../utils/getRequest';
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
@@ -43,63 +45,49 @@ export const Weather = () => {
     axios
       .get(getLocationUrl + latLng.lat.toString() + ',' + latLng.lat.toString())
       .then((res) => {
-        axios
-          .get(forecastsUrl + res.data.Key + apiKey)
-          .then((result) => {
-            setDefaultWeather(result.data.DailyForecasts);
-          })
-          .catch((err) => {
-            console.clear();
-            showSnackBar(enqueueSnackbar, action);
-          });
+        getRequest(forecastsUrl + res.data.Key + apiKey, {
+          setData: setDefaultWeather,
+          action: action,
+          enqueueSnackbar: enqueueSnackbar,
+          page: 'weather',
+        });
       })
       .catch((err) => {
         console.clear();
-        showSnackBar(enqueueSnackbar, action);
+        showSnackBar(enqueueSnackbar, action, err.message);
       });
   };
+
   //axios get coords = fail
   const fail = (e: any) => {
-    axios
-      .get(forecastsUrl + telAvivKey.toString() + apiKey)
-      .then((res) => {
-        setDefaultWeather(res.data.DailyForecasts);
-      })
-      .catch((err) => {
-        console.clear();
-        showSnackBar(enqueueSnackbar, action);
-      });
+    getRequest(forecastsUrl + telAvivKey.toString() + apiKey, {
+      setData: setDefaultWeather,
+      action: action,
+      enqueueSnackbar: enqueueSnackbar,
+      page: 'weather',
+    });
   };
 
   useEffect(() => {
     if (state.selectedFavorite.key !== 0) {
-      axios
-        .get(forecastsUrl + state.selectedFavorite.key.toString() + apiKey)
-        .then((res) => {
-          setDefaultWeather(res.data);
-        })
-        .catch((err) => {
-          console.clear();
-          showSnackBar(enqueueSnackbar, action);
-        });
+      getRequest(
+        forecastsUrl + state.selectedFavorite.key.toString() + apiKey,
+        {
+          setData: setDefaultWeather,
+          enqueueSnackbar: enqueueSnackbar,
+          action: action,
+          page: 'weather',
+        }
+      );
     } else {
       navigator.geolocation.getCurrentPosition(success, fail);
     }
   }, []);
 
-  //(latLng.lat && latLng.lng ?latLng.lat+","+latLng.lng: telAvivKey.toString())
   //snackbar popup action
-  const action = (key: any) => (
-    <>
-      <Button
-        onClick={() => {
-          closeSnackbar(key);
-        }}
-      >
-        DISMISS
-      </Button>
-    </>
-  );
+  const action = (key: any) =>
+    enqueueAction({ key: key, closeSnackbar: closeSnackbar });
+
   return (
     <WeatherPageWrapper>
       <Grid container justifyContent={'center'} alignItems={'center'}>

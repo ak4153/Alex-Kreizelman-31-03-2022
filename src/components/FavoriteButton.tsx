@@ -1,13 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Card,
-  Grid,
-  CardContent,
-  Typography,
-  List,
-  ListItem,
-  Button,
-} from '@mui/material';
+import { Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Store } from '../Store/Provider';
 

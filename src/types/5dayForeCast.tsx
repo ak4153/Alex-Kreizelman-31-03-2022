@@ -51,7 +51,7 @@ export interface DailyForecast {
 }
 
 interface FivedayForeCast {
-  Headline: Headline;
+  Headline: Headline | undefined;
   DailyForecast: DailyForecast[];
 }
 

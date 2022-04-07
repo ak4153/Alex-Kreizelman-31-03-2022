@@ -4,13 +4,14 @@ import axios from 'axios';
 import WeatherIcon from './WeatherIcon';
 import getDayOfWeek from '../utils/getDayOfWeek';
 import FavoriteButton from './FavoriteButton';
-
+import enqueueAction from '../utils/enqueueAction';
 import urls from '../assets/urls.json';
 import { Store } from '../Store/Provider';
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import SkeletonLoad from '../components/Skeleton';
 import showSnackBar from '../utils/showSnackBar';
+import getRequest from '../utils/getRequest';
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const currentconditionsUrl = `${baseUrl}/currentconditions/v1/`;
@@ -26,25 +27,17 @@ export const FavWeatherItem = (props: Props) => {
 
   useEffect(() => {
     if (props.favorite) {
-      axios
-        .get(locationsUrl + props.favorite + apiKey)
-        .then((res) => {
-          setLocation((prevState: any) => (prevState = res.data));
-        })
-        .catch((err) => {
-          console.clear();
-          showSnackBar(enqueueSnackbar, action);
-        });
-
-      axios
-        .get(currentconditionsUrl + props.favorite + apiKey)
-        .then((res) => {
-          setCurrentWeather((prevState: any) => (prevState = res.data[0]));
-        })
-        .catch((err) => {
-          console.clear();
-          showSnackBar(enqueueSnackbar, action);
-        });
+      getRequest(locationsUrl + props.favorite + apiKey, {
+        enqueueSnackbar: enqueueSnackbar,
+        action: action,
+        setData: setLocation,
+      });
+      getRequest(currentconditionsUrl + props.favorite + apiKey, {
+        enqueueSnackbar: enqueueSnackbar,
+        action: action,
+        setData: setCurrentWeather,
+        page: 'favweatheritemComponent',
+      });
     }
   }, []);
 
@@ -55,17 +48,8 @@ export const FavWeatherItem = (props: Props) => {
     });
   };
 
-  const action = (key: any) => (
-    <>
-      <Button
-        onClick={() => {
-          closeSnackbar(key);
-        }}
-      >
-        DISMISS
-      </Button>
-    </>
-  );
+  const action = (key: any) =>
+    enqueueAction({ key: key, closeSnackbar: closeSnackbar });
 
   return (
     <Grid item xs={6} md={5} xl={5}>

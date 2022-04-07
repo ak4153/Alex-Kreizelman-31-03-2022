@@ -1,5 +1,9 @@
-function showSnackBar(enqueueSnackbar: Function, action: Function) {
-  enqueueSnackbar("Couldn't fetch data", {
+function showSnackBar(
+  enqueueSnackbar: Function,
+  action: Function,
+  message: string
+) {
+  enqueueSnackbar(message, {
     variant: 'warning',
     preventDuplicate: true,
     action,

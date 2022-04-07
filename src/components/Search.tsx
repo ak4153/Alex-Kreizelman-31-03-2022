@@ -1,17 +1,17 @@
-import { useEffect, useState, useContext, useMemo } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
-import axios from 'axios';
 import { Capture } from '../types/Capture';
 import { Button } from '@mui/material';
-import Weather from '../types/Weather';
 import _ from 'lodash';
 import urls from '../assets/urls.json';
-
 import { useSnackbar } from 'notistack';
 import { Store } from '../Store/Provider';
 import { AutoComplete } from '../types/AutoCompleteType';
+import getRequest from '../utils/getRequest';
+import enqueueAction from '../utils/enqueueAction';
+import showSnackBar from '../utils/showSnackBar';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
@@ -30,45 +30,22 @@ export default function SearchInput(props: Props) {
   const { dispatch } = useContext(Store);
 
   useEffect(() => {
-    axios
-      .get(autocompleteUrl + input)
-      .then((res) => {
-        setData((prevData) => (prevData = res.data));
-      })
-      .catch((err) => {
-        {
-          console.clear();
-          enqueueSnackbar("Couldn't fetch data", {
-            variant: 'warning',
-            preventDuplicate: true,
-            action,
-          });
-        }
-      });
+    getRequest(autocompleteUrl + input, {
+      setData: setData,
+      enqueueSnackbar: enqueueSnackbar,
+      action: action,
+    });
   }, [input]);
 
   useEffect(() => {
     if (capture) {
-      axios
-        .get(forecastsUrl + capture.Key + apiKey)
-        .then((res) => {
-          const dataToSave = {
-            foreCast: res.data,
-            key: capture.Key,
-            city: capture.LocalizedName,
-          };
-          props.setCityWeather(
-            (prevWeather: any) => (prevWeather = dataToSave)
-          );
-        })
-        .catch((err) => {
-          console.clear();
-          enqueueSnackbar("Couldn't fetch data", {
-            variant: 'warning',
-            preventDuplicate: true,
-            action,
-          });
-        });
+      getRequest(forecastsUrl + capture.Key + apiKey, {
+        setData: props.setCityWeather,
+        action: action,
+        enqueueSnackbar: enqueueSnackbar,
+        page: 'searchComponent',
+        capture: capture,
+      });
     }
   }, [capture]);
 
@@ -84,26 +61,13 @@ export default function SearchInput(props: Props) {
     if (res) {
       return setInput(e.target.value);
     } else {
-      return enqueueSnackbar('English letters please', {
-        variant: 'warning',
-        preventDuplicate: true,
-        action,
-      });
+      return showSnackBar(enqueueSnackbar, action, 'English letters please');
     }
   }, 500);
 
   //snackbar button
-  const action = (key: any) => (
-    <>
-      <Button
-        onClick={() => {
-          closeSnackbar(key);
-        }}
-      >
-        DISMISS
-      </Button>
-    </>
-  );
+  const action = (key: any) =>
+    enqueueAction({ key: key, closeSnackbar: closeSnackbar });
 
   return (
     <>
