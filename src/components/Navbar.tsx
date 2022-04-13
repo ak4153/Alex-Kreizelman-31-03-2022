@@ -15,11 +15,18 @@ import { Store } from '../Store/Provider';
 import { Grid } from '@mui/material';
 import UnitSwitch from './UnitSwitch';
 
+//redux
+import { setDarkMode } from '../reduxSlices/darkModeSlices';
+import { useAppDispatch, useAppSelector } from '../Store/hooks';
+
 export const Navbar: React.FC = () => {
-  const { state, dispatch } = React.useContext(Store);
+  // const { state, dispatch } = React.useContext(Store);
+  const darkMode = useAppSelector((state) => state.darkMode);
+  const dispatch = useAppDispatch();
 
   const handleDarkMode = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: 'SET_DARKMODE' });
+    // dispatch({ type: 'SET_DARKMODE' });
+    dispatch(setDarkMode());
   };
 
   return (
@@ -51,11 +58,11 @@ export const Navbar: React.FC = () => {
                 control={
                   <Switch
                     onChange={handleDarkMode}
-                    checked={state.darkMode}
+                    checked={darkMode.value}
                     aria-label="login switch"
                   />
                 }
-                label={state.darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+                label={darkMode.value ? <DarkModeIcon /> : <LightModeIcon />}
               />
             </FormGroup>
           </Grid>

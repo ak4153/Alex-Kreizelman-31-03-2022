@@ -1,6 +1,9 @@
-import axios, { Axios, AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { DailyForecast } from '../types/5dayForeCast';
 import { Capture } from '../types/Capture';
+//types
+import Location from '../types/Location';
+import CurrentWeather from '../types/CurrentWeather';
 interface Options {
   setData?: Function;
   enqueueSnackbar?: Function;
@@ -12,17 +15,17 @@ interface Options {
     | 'favorites'
     | 'weather'
     | 'searchComponent'
-    | 'favweatheritemComponent';
+    | 'favweatheritemComponent'
+    | 'favweatheritemComponent_setLocation';
 }
 
 /**
- * axios get wrapper
+ * axios ".get" wrapper
  */
 const getRequest = (url: string, options: Options) => {
   axios
     .get(url)
     .then((res) => {
-      console.log('res.data', res.data);
       if (options.page === 'searchComponent') {
         const dataToSave = {
           foreCast: res.data,
@@ -39,14 +42,17 @@ const getRequest = (url: string, options: Options) => {
       }
 
       if (options.page === 'favweatheritemComponent') {
-        return options.setData((prevData: any) => (prevData = res.data[0]));
+        return options.setData(
+          (prevData: CurrentWeather) => (prevData = res.data[0])
+        );
       }
-
-      return options.setData((prevData: any) => (prevData = res.data));
+      if (options.page === 'favweatheritemComponent_setLocation') {
+        console.log('fetchdata', res.data);
+        return options.setData((prevData: Location) => (prevData = res.data));
+      }
     })
     .catch((err: AxiosError) => {
-      console.clear();
-      options.enqueueSnackbar("Couldn't fetch data" + err.message, {
+      options.enqueueSnackbar('Error: ' + err.message, {
         variant: 'warning',
         preventDuplicate: true,
         action: options.action,

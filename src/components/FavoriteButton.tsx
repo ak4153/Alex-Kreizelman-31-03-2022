@@ -19,7 +19,6 @@ const FavoriteButton = (props: Props) => {
 
   return (
     <Button>
-      {/* change to primary on click */}
       <FavoriteIcon
         onClick={handleAddToFav}
         color={

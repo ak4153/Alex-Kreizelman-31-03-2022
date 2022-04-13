@@ -2,17 +2,22 @@ import { useEffect, useState, useContext } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Capture } from '../types/Capture';
+
 import { Button } from '@mui/material';
-import _ from 'lodash';
+import _, { isNull } from 'lodash';
 import urls from '../assets/urls.json';
 import { useSnackbar } from 'notistack';
 import { Store } from '../Store/Provider';
+//<Types>
 import { AutoComplete } from '../types/AutoCompleteType';
+import { Capture } from '../types/Capture';
+//</Types>
 import getRequest from '../utils/getRequest';
 import enqueueAction from '../utils/enqueueAction';
 import showSnackBar from '../utils/showSnackBar';
-
+//<redux >
+import { useFetchCitiesQuery } from '../reduxSlices/weather';
+//</redux>
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
@@ -24,18 +29,15 @@ interface Props {
 
 export default function SearchInput(props: Props) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [data, setData] = useState<AutoComplete[]>([]);
+  // const [data, setData] = useState<AutoComplete[]>([]);
   const [capture, setCapture] = useState<Capture>();
   const [input, setInput] = useState<string>('');
   const { dispatch } = useContext(Store);
 
-  useEffect(() => {
-    getRequest(autocompleteUrl + input, {
-      setData: setData,
-      enqueueSnackbar: enqueueSnackbar,
-      action: action,
-    });
-  }, [input]);
+  //~~~~~~~~~~~~~~~~redux related
+  const { data = [], isFetching, isError } = useFetchCitiesQuery(input);
+
+  //~~~~~~~~~~~~~~~~redux related
 
   useEffect(() => {
     if (capture) {
@@ -76,13 +78,37 @@ export default function SearchInput(props: Props) {
           id="free-solo-demo"
           freeSolo
           onChange={handleClick}
-          getOptionLabel={(data: AutoComplete) => data.LocalizedName}
-          options={data ? data : []}
+          getOptionLabel={(data: AutoComplete) =>
+            data.LocalizedName ? data.LocalizedName : ''
+          }
+          options={
+            !isNull(data) && data!.length > 0
+              ? data
+              : [
+                  {
+                    Country: {
+                      LocalizedName: isError
+                        ? 'Couldnt Fetch, check the apikey'
+                        : 'Type a city name...',
+                    },
+                  },
+                ]
+          }
           isOptionEqualToValue={(option, value) =>
             option.Country.LocalizedName === value.Country.LocalizedName
           }
           renderOption={(props: any, data: AutoComplete) => (
-            <Button {...props} key={Math.random()}>
+            <Button
+              disabled={
+                data.Country.LocalizedName ===
+                  'Couldnt Fetch check the apikey' ||
+                data.Country.LocalizedName === 'Type a city name...'
+                  ? true
+                  : false
+              }
+              {...props}
+              key={Math.random()}
+            >
               {data.Country.LocalizedName} - {data.LocalizedName}
             </Button>
           )}

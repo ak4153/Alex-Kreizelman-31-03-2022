@@ -8,33 +8,37 @@ import { Weather } from './pages/Weather';
 import { StoreProvider } from './Store/Provider';
 import { SnackbarProvider } from 'notistack';
 import Grow from '@material-ui/core/Grow';
+import { Provider } from 'react-redux';
+import { store } from './Store/reduxjsStore';
 ReactDOM.render<React.FC>(
   <React.StrictMode>
     <StoreProvider>
-      <SnackbarProvider
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        TransitionComponent={Grow as any}
-      >
-        <BrowserRouter>
-          <Routes>
-            <Route element={<App />}>
-              <Route path="favorites" element={<Favorites />} />
-              <Route path="/" element={<Weather />} />
-              <Route
-                path="*"
-                element={
-                  <main style={{ padding: '1rem' }}>
-                    <p>There's nothing here!</p>
-                  </main>
-                }
-              />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </SnackbarProvider>
+      <Provider store={store}>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          TransitionComponent={Grow as any}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route element={<App />}>
+                <Route path="favorites" element={<Favorites />} />
+                <Route path="/" element={<Weather />} />
+                <Route
+                  path="*"
+                  element={
+                    <main style={{ padding: '1rem' }}>
+                      <p>There's nothing here!</p>
+                    </main>
+                  }
+                />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </SnackbarProvider>
+      </Provider>
     </StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')

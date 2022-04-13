@@ -2,8 +2,7 @@ import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
-import Rotate90DegreesCcwIcon from '@mui/icons-material/Rotate90DegreesCcw';
-import Rotate90DegreesCwIcon from '@mui/icons-material/Rotate90DegreesCw';
+
 import { Store } from '../Store/Provider';
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
 export default function UnitSwitch() {

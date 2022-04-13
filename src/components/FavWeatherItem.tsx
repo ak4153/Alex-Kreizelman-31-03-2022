@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Card, Grid, Typography, Button } from '@mui/material';
+import { Card, Grid, Typography } from '@mui/material';
 import WeatherIcon from './WeatherIcon';
 import getDayOfWeek from '../utils/getDayOfWeek';
 import FavoriteButton from './FavoriteButton';
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import SkeletonLoad from '../components/Skeleton';
 import getRequest from '../utils/getRequest';
+//types
 import Location from '../types/Location';
 import CurrentWeather from '../types/CurrentWeather';
 const apiKey = process.env.REACT_APP_API_KEY;
@@ -31,6 +32,7 @@ export const FavWeatherItem = (props: Props) => {
         enqueueSnackbar: enqueueSnackbar,
         action: action,
         setData: setLocation,
+        page: 'favweatheritemComponent_setLocation',
       });
       getRequest(currentconditionsUrl + props.favorite + apiKey, {
         enqueueSnackbar: enqueueSnackbar,
@@ -53,7 +55,7 @@ export const FavWeatherItem = (props: Props) => {
 
   return (
     <Grid item xs={6} md={5} xl={5}>
-      {currentWeather ? (
+      {currentWeather && location ? (
         <Card>
           <Grid container spacing={3} justifyContent="center">
             <Grid item xs={12} md={6} xl={6}>

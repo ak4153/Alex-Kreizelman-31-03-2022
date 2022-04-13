@@ -55,11 +55,11 @@ const reducer = (state: InitialState, action: any) => {
     case 'CLEAR_FAVORITE':
       return { ...state, selectedFavorite: { key: 0, locationName: '' } };
 
-    case 'SET_DARKMODE':
-      let setDarkMode = state.darkMode ? false : true;
-      Cookies.set('darkMode', JSON.stringify(setDarkMode));
+    // case 'SET_DARKMODE':
+    //   let setDarkMode = state.darkMode ? false : true;
+    //   Cookies.set('darkMode', JSON.stringify(setDarkMode));
 
-      return { ...state, darkMode: setDarkMode };
+    // return { ...state, darkMode: setDarkMode };
     case 'SET_UNIT':
       let setUnit = state.isCelsius ? false : true;
       Cookies.set('isCelsius', JSON.stringify(setUnit));

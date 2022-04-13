@@ -2,13 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 
 import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
-import {
-  Card,
-  Grid,
-  Typography,
-  CircularProgress,
-  Button,
-} from '@mui/material';
+import { Card, Grid, Typography, CircularProgress } from '@mui/material';
 import SearchInput from '../components/Search';
 
 import getDayOfWeek from '../utils/getDayOfWeek';

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ClockWrapper from '../styles/ClockWrapper';
 import { Typography } from '@mui/material';
 function Clock() {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState<Date>(new Date());
 
   function refreshClock() {
     setDate(new Date());
