@@ -1,8 +1,8 @@
 ## Sharp - Weather app
 
 <h2>Tech:</h2>
-<p>TypeScript, axios, Material-UI, styled-components</p>
-<p>Responsive thanks to MUI Grid</p>
+<p>TypeScript, axios, Material-UI, styled-components, Redux-toolkit</p>
+<p>Responsive app</p>
 
 <h3>Architecture</h3>
 <img src="./src/assets/archi.png" alt="Architecture">

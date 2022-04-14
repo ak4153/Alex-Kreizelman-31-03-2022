@@ -10,9 +10,14 @@ import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import SkeletonLoad from '../components/Skeleton';
 import getRequest from '../utils/getRequest';
+
 //types
 import Location from '../types/Location';
 import CurrentWeather from '../types/CurrentWeather';
+//redux
+import { setFavorites } from '../reduxSlices/favoritesSlice';
+import { useAppDispatch, useAppSelector } from '../Store/hooks';
+
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const currentconditionsUrl = `${baseUrl}/currentconditions/v1/`;
@@ -25,6 +30,8 @@ export const FavWeatherItem = (props: Props) => {
   const { state, dispatch } = useContext<any>(Store);
   const [currentWeather, setCurrentWeather] = useState<CurrentWeather>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const favorites = useAppSelector((state) => state.favorites);
+  // const dipatch = useAppDispatch();
 
   useEffect(() => {
     if (props.favorite) {
@@ -44,10 +51,16 @@ export const FavWeatherItem = (props: Props) => {
   }, []);
 
   const onLinkClick = () => {
-    dispatch({
-      type: 'SELECT_FAVORITE',
-      payload: { key: props.favorite, locationName: location.LocalizedName },
-    });
+    // dispatch({
+    //   type: 'SELECT_FAVORITE',
+    //   payload: { key: props.favorite, locationName: location.LocalizedName },
+    // });
+    // dipatch(
+    //   setFavorites({
+    //     key: props.favorite,
+    //     locationName: location.LocalizedName,
+    //   })
+    // );
   };
 
   const action = (key: any) =>
@@ -68,7 +81,10 @@ export const FavWeatherItem = (props: Props) => {
               <FavoriteButton locationKey={props.favorite} />
             </Grid>
             <Grid item>
-              <Link to={'/'} onClick={onLinkClick}>
+              <Link
+                to={`/?selectedFavoriteKey=${props.favorite}&selectedFavoriteCityName=${location.LocalizedName}`}
+                onClick={onLinkClick}
+              >
                 <Typography textAlign="center">Forecast</Typography>
               </Link>
             </Grid>
@@ -93,12 +109,9 @@ export const FavWeatherItem = (props: Props) => {
             </Grid>
           </Grid>
         </Card>
-      ) : state.favorites.length < 1 ? (
+      ) : favorites.length < 1 ? (
         <Grid item xs={8} md={8}>
-          <Typography margin="10px" variant="h5" component="h5">
-            Nothing here
-          </Typography>
-          )
+          <Typography margin="10px" variant="h5" component="h5"></Typography>)
         </Grid>
       ) : (
         <SkeletonLoad />

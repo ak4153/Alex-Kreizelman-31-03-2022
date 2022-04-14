@@ -2,7 +2,7 @@ import { createContext, useReducer } from 'react';
 import Cookies from 'js-cookie';
 import InitialState from '../types/initialState';
 export const Store = createContext<any>(null);
-
+//context api store
 const initialState: InitialState = {
   favorites: Cookies.get('favorites')
     ? JSON.parse(Cookies.get('favorites')!)
@@ -18,48 +18,43 @@ const initialState: InitialState = {
 
 const reducer = (state: InitialState, action: any) => {
   switch (action.type) {
-    case 'SET_FAVORITES':
-      //removing/adding a favorite
-      if (!state.favorites.find((fav) => fav === action.payload.key)) {
-        const newFavorites = [...state.favorites, action.payload.key];
-        Cookies.set('favorites', JSON.stringify(newFavorites));
-        return {
-          ...state,
-          favorites: newFavorites,
-        };
-      } else {
-        const newFavorites = state.favorites.filter(
-          (fav) => fav !== action.payload.key
-        );
+    // case 'SET_FAVORITES':
+    //   //removing/adding a favorite
+    //   if (!state.favorites.find((fav) => fav === action.payload.key)) {
+    //     const newFavorites = [...state.favorites, action.payload.key];
+    //     Cookies.set('favorites', JSON.stringify(newFavorites));
+    //     return {
+    //       ...state,
+    //       favorites: newFavorites,
+    //     };
+    //   } else {
+    //     const newFavorites = state.favorites.filter(
+    //       (fav) => fav !== action.payload.key
+    //     );
 
-        Cookies.set('favorites', JSON.stringify(newFavorites));
+    //     Cookies.set('favorites', JSON.stringify(newFavorites));
 
-        return {
-          ...state,
-          favorites: newFavorites,
-        };
-      }
-    case 'SELECT_FAVORITE':
-      if (action.payload.key !== 0)
-        return {
-          ...state,
-          selectedFavorite: {
-            key: action.payload.key,
-            locationName: action.payload.locationName,
-          },
-        };
-      else {
-        return { ...state };
-      }
+    //     return {
+    //       ...state,
+    //       favorites: newFavorites,
+    //     };
+    //   }
+    // case 'SELECT_FAVORITE':
+    //   if (action.payload.key !== 0)
+    //     return {
+    //       ...state,
+    //       selectedFavorite: {
+    //         key: action.payload.key,
+    //         locationName: action.payload.locationName,
+    //       },
+    //     };
+    //   else {
+    //     return { ...state };
+    //   }
 
-    case 'CLEAR_FAVORITE':
-      return { ...state, selectedFavorite: { key: 0, locationName: '' } };
+    // case 'CLEAR_FAVORITE':
+    //   return { ...state, selectedFavorite: { key: 0, locationName: '' } };
 
-    // case 'SET_DARKMODE':
-    //   let setDarkMode = state.darkMode ? false : true;
-    //   Cookies.set('darkMode', JSON.stringify(setDarkMode));
-
-    // return { ...state, darkMode: setDarkMode };
     case 'SET_UNIT':
       let setUnit = state.isCelsius ? false : true;
       Cookies.set('isCelsius', JSON.stringify(setUnit));

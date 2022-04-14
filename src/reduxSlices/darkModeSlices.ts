@@ -6,7 +6,7 @@ interface DarkModeState {
 const initialState: DarkModeState = {
   value: Cookies.get('darkMode') ? JSON.parse(Cookies.get('darkMode')!) : false,
 };
-
+//DUCK-style
 const darkModeSlice = createSlice({
   name: 'darkMode',
   initialState,

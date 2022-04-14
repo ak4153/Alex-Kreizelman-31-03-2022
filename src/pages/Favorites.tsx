@@ -3,12 +3,14 @@ import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
 import { Grid, Typography } from '@mui/material';
 import { Store } from '../Store/Provider';
 import { FavWeatherItem } from '../components/FavWeatherItem';
-
 import { Link } from 'react-router-dom';
 
+//redux
+import { useAppSelector } from '../Store/hooks';
+import { setFavorites } from '../reduxSlices/favoritesSlice';
 export const Favorites = () => {
-  const { state, dispatch } = useContext(Store);
-
+  // const { state, dispatch } = useContext(Store);
+  const favorites = useAppSelector((state) => state.favorites);
   return (
     <WeatherPageWrapper>
       <Grid container>
@@ -19,9 +21,9 @@ export const Favorites = () => {
             spacing={3}
             justifyContent="center"
           >
-            {state.favorites.length > 0 ? (
-              state.favorites.map((fav: any) => (
-                <FavWeatherItem key={Math.random()} favorite={fav} />
+            {favorites.length > 0 ? (
+              favorites.map((fav: any) => (
+                <FavWeatherItem key={Math.random()} favorite={fav.key} />
               ))
             ) : (
               <Grid item>

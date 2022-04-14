@@ -20,6 +20,8 @@ import { DailyForecast } from '../types/5dayForeCast';
 import { CityWeather } from '../types/CityWeather';
 import enqueueAction from '../utils/enqueueAction';
 import getRequest from '../utils/getRequest';
+import { useSearchParams } from 'react-router-dom';
+import { isNull } from 'lodash';
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
@@ -29,10 +31,9 @@ const getLocationUrl = `${baseUrl}/locations/v1/cities/geoposition/search${apiKe
 export const Weather = () => {
   const { state } = useContext(Store);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  //static value => change to dynaic
   const [cityWeather, setCityWeather] = useState<CityWeather>();
   const [defaultWeather, setDefaultWeather] = useState<DailyForecast[]>([]);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   //axios get coords = success
   const success = (e: any) => {
     let latLng = { lat: e.coords.latitude, lng: e.coords.longitude };
@@ -63,9 +64,13 @@ export const Weather = () => {
   };
 
   useEffect(() => {
-    if (state.selectedFavorite.key !== 0) {
+    //selectedFavorite
+    if (!isNull(searchParams.get('selectedFavoriteKey'))) {
+      console.log(searchParams.get('selectedFavoriteCityName'));
       getRequest(
-        forecastsUrl + state.selectedFavorite.key.toString() + apiKey,
+        forecastsUrl +
+          searchParams.get('selectedFavoriteKey').toString() +
+          apiKey,
         {
           setData: setDefaultWeather,
           enqueueSnackbar: enqueueSnackbar,
@@ -146,7 +151,6 @@ export const Weather = () => {
                         <Grid item>
                           {/* change to primary on click */}
                           <FavoriteButton
-                            favorites={state.favorites}
                             locationKey={cityWeather.key}
                             cityWeather={cityWeather}
                           />
@@ -223,9 +227,13 @@ export const Weather = () => {
                             variant="h4"
                             component="h4"
                           >
-                            {state.selectedFavorite.key === 0
+                            {isNull(
+                              searchParams.get('selectedFavoriteCityName')
+                            )
                               ? `Tel Aviv `
-                              : state.selectedFavorite.locationName}{' '}
+                              : searchParams.get(
+                                  'selectedFavoriteCityName'
+                                )}{' '}
                             -{' '}
                             {state.isCelsius
                               ? convertNow(
@@ -249,11 +257,12 @@ export const Weather = () => {
                         <Grid item>
                           <FavoriteButton
                             locationKey={
-                              state.selectedFavorite.key === 0
+                              isNull(searchParams.get('selectedFavoriteKey'))
                                 ? telAvivKey
-                                : state.selectedFavorite.key
+                                : Number.parseInt(
+                                    searchParams.get('selectedFavoriteKey')
+                                  )
                             }
-                            favorites={state.favorites}
                           />
                         </Grid>
                       </Grid>

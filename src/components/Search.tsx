@@ -8,6 +8,7 @@ import _, { isNull } from 'lodash';
 import urls from '../assets/urls.json';
 import { useSnackbar } from 'notistack';
 import { Store } from '../Store/Provider';
+
 //<Types>
 import { AutoComplete } from '../types/AutoCompleteType';
 import { Capture } from '../types/Capture';
@@ -15,6 +16,7 @@ import { Capture } from '../types/Capture';
 import getRequest from '../utils/getRequest';
 import enqueueAction from '../utils/enqueueAction';
 import showSnackBar from '../utils/showSnackBar';
+import { useSearchParams } from 'react-router-dom';
 //<redux >
 import { useFetchCitiesQuery } from '../reduxSlices/weather';
 //</redux>
@@ -33,7 +35,7 @@ export default function SearchInput(props: Props) {
   const [capture, setCapture] = useState<Capture>();
   const [input, setInput] = useState<string>('');
   const { dispatch } = useContext(Store);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   //~~~~~~~~~~~~~~~~redux related
   const { data = [], isFetching, isError } = useFetchCitiesQuery(input);
 
@@ -54,7 +56,7 @@ export default function SearchInput(props: Props) {
   const handleClick = (event: any, value: any, reason: any) => {
     if (reason === 'selectOption') {
       setCapture(value);
-      dispatch({ type: 'CLEAR_FAVORITE' });
+      setSearchParams('selectedFavoriteKey', { replace: true, state: '' });
     }
   };
 

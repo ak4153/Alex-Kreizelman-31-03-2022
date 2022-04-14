@@ -47,11 +47,11 @@ const getRequest = (url: string, options: Options) => {
         );
       }
       if (options.page === 'favweatheritemComponent_setLocation') {
-        console.log('fetchdata', res.data);
         return options.setData((prevData: Location) => (prevData = res.data));
       }
     })
     .catch((err: AxiosError) => {
+      // console.clear();
       options.enqueueSnackbar('Error: ' + err.message, {
         variant: 'warning',
         preventDuplicate: true,

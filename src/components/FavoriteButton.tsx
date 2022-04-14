@@ -3,6 +3,10 @@ import { Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Store } from '../Store/Provider';
 
+//redux
+import { setFavorites } from '../reduxSlices/favoritesSlice';
+import { useAppDispatch, useAppSelector } from '../Store/hooks';
+
 interface Props {
   favorites?: any[];
   locationKey: number;
@@ -10,11 +14,15 @@ interface Props {
 }
 
 const FavoriteButton = (props: Props) => {
-  const { favorites, locationKey, cityWeather } = props;
-  const { state, dispatch } = useContext(Store);
+  const { locationKey } = props;
+  // const { state, dispatch } = useContext(Store);
+
+  //redux
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector((state) => state.favorites);
 
   const handleAddToFav = () => {
-    dispatch({ type: 'SET_FAVORITES', payload: { key: locationKey } });
+    dispatch(setFavorites({ key: +locationKey }));
   };
 
   return (
@@ -22,7 +30,7 @@ const FavoriteButton = (props: Props) => {
       <FavoriteIcon
         onClick={handleAddToFav}
         color={
-          state.favorites.find((k: number) => locationKey === k)
+          favorites.find((fav: { key: number }) => +locationKey === fav.key)
             ? 'error'
             : 'action'
         }
