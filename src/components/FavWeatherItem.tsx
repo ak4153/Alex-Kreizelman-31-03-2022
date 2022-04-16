@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Grid, Typography } from '@mui/material';
 import WeatherIcon from './WeatherIcon';
 import getDayOfWeek from '../utils/getDayOfWeek';
 import FavoriteButton from './FavoriteButton';
 import enqueueAction from '../utils/enqueueAction';
 import urls from '../assets/urls.json';
-import { Store } from '../Store/Provider';
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import SkeletonLoad from '../components/Skeleton';
@@ -15,8 +14,7 @@ import getRequest from '../utils/getRequest';
 import Location from '../types/Location';
 import CurrentWeather from '../types/CurrentWeather';
 //redux
-import { setFavorites } from '../reduxSlices/favoritesSlice';
-import { useAppDispatch, useAppSelector } from '../Store/hooks';
+import { useAppSelector } from '../Store/hooks';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
@@ -27,10 +25,10 @@ interface Props {
 }
 export const FavWeatherItem = (props: Props) => {
   const [location, setLocation] = useState<Location>();
-  const { state, dispatch } = useContext<any>(Store);
   const [currentWeather, setCurrentWeather] = useState<CurrentWeather>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const favorites = useAppSelector((state) => state.favorites);
+  const isCelsius = useAppSelector((state) => state.isCelsius);
   // const dipatch = useAppDispatch();
 
   useEffect(() => {
@@ -101,7 +99,7 @@ export const FavWeatherItem = (props: Props) => {
 
               <Grid xs={12} md={12} xl={12} item>
                 <Typography textAlign={'center'}>
-                  {!state.isCelsius
+                  {!isCelsius.value
                     ? `${currentWeather.Temperature.Metric.Value}°C`
                     : `${currentWeather.Temperature.Imperial.Value}°F`}
                 </Typography>

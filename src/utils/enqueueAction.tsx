@@ -12,7 +12,6 @@ const enqueueAction = (options: Options) => (
         options.closeSnackbar(options.key);
       }}
     >
-      {console.log(options.key)}
       DISMISS
     </Button>
   </>

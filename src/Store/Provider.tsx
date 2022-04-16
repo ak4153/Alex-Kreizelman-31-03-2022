@@ -18,48 +18,6 @@ const initialState: InitialState = {
 
 const reducer = (state: InitialState, action: any) => {
   switch (action.type) {
-    // case 'SET_FAVORITES':
-    //   //removing/adding a favorite
-    //   if (!state.favorites.find((fav) => fav === action.payload.key)) {
-    //     const newFavorites = [...state.favorites, action.payload.key];
-    //     Cookies.set('favorites', JSON.stringify(newFavorites));
-    //     return {
-    //       ...state,
-    //       favorites: newFavorites,
-    //     };
-    //   } else {
-    //     const newFavorites = state.favorites.filter(
-    //       (fav) => fav !== action.payload.key
-    //     );
-
-    //     Cookies.set('favorites', JSON.stringify(newFavorites));
-
-    //     return {
-    //       ...state,
-    //       favorites: newFavorites,
-    //     };
-    //   }
-    // case 'SELECT_FAVORITE':
-    //   if (action.payload.key !== 0)
-    //     return {
-    //       ...state,
-    //       selectedFavorite: {
-    //         key: action.payload.key,
-    //         locationName: action.payload.locationName,
-    //       },
-    //     };
-    //   else {
-    //     return { ...state };
-    //   }
-
-    // case 'CLEAR_FAVORITE':
-    //   return { ...state, selectedFavorite: { key: 0, locationName: '' } };
-
-    case 'SET_UNIT':
-      let setUnit = state.isCelsius ? false : true;
-      Cookies.set('isCelsius', JSON.stringify(setUnit));
-      return { ...state, isCelsius: setUnit };
-
     default:
       return { ...state };
   }

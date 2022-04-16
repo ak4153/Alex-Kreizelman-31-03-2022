@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 
 import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
 import { Card, Grid, Typography, CircularProgress } from '@mui/material';
 import SearchInput from '../components/Search';
-
+import Temperature from '../components/Temperature';
 import getDayOfWeek from '../utils/getDayOfWeek';
-import { Store } from '../Store/Provider';
 import WeatherIcon from '../components/WeatherIcon';
 import FavoriteButton from '../components/FavoriteButton';
 import axios from 'axios';
@@ -15,7 +14,6 @@ import urls from '../assets/urls.json';
 import Clock from '../components/TickingClock';
 import { useSnackbar } from 'notistack';
 import showSnackBar from '../utils/showSnackBar';
-import { meanTemp, convertNow } from '../utils/tempConversion';
 import { DailyForecast } from '../types/5dayForeCast';
 import { CityWeather } from '../types/CityWeather';
 import enqueueAction from '../utils/enqueueAction';
@@ -29,7 +27,6 @@ const telAvivKey = 215854;
 const getLocationUrl = `${baseUrl}/locations/v1/cities/geoposition/search${apiKey}&q=`;
 
 export const Weather = () => {
-  const { state } = useContext(Store);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [cityWeather, setCityWeather] = useState<CityWeather>();
   const [defaultWeather, setDefaultWeather] = useState<DailyForecast[]>([]);
@@ -121,32 +118,12 @@ export const Weather = () => {
                     <Grid item xs={12} md={12} xl={12}>
                       <Grid container>
                         <Grid item xs={12} md={10} xl={12}>
-                          <Typography
-                            margin={'10px'}
-                            variant="h4"
-                            component="h4"
-                          >
-                            {cityWeather.city} - {}
-                            {state.isCelsius
-                              ? convertNow(
-                                  'f',
-                                  meanTemp(
-                                    cityWeather.foreCast.DailyForecasts[0]
-                                      .Temperature.Maximum.Value,
-                                    cityWeather.foreCast.DailyForecasts[0]
-                                      .Temperature.Minimum.Value
-                                  )
-                                )
-                              : convertNow(
-                                  'c',
-                                  meanTemp(
-                                    cityWeather.foreCast.DailyForecasts[0]
-                                      .Temperature.Maximum.Value,
-                                    cityWeather.foreCast.DailyForecasts[0]
-                                      .Temperature.Minimum.Value
-                                  )
-                                )}
-                          </Typography>
+                          <Temperature
+                            text={cityWeather.city}
+                            temperature={
+                              cityWeather.foreCast.DailyForecasts[0].Temperature
+                            }
+                          ></Temperature>
                         </Grid>
                         <Grid item>
                           {/* change to primary on click */}
@@ -177,23 +154,10 @@ export const Weather = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12} xl={12}>
-                              <Typography>
-                                {state.isCelsius
-                                  ? convertNow(
-                                      'f',
-                                      meanTemp(
-                                        day.Temperature.Maximum.Value,
-                                        day.Temperature.Minimum.Value
-                                      )
-                                    )
-                                  : convertNow(
-                                      'c',
-                                      meanTemp(
-                                        day.Temperature.Maximum.Value,
-                                        day.Temperature.Minimum.Value
-                                      )
-                                    )}
-                              </Typography>
+                              <Temperature
+                                textSize="h6"
+                                temperature={day.Temperature}
+                              ></Temperature>
                             </Grid>
                           </Grid>
                         </Card>
@@ -222,37 +186,16 @@ export const Weather = () => {
                     <Grid item xs={12} md={12} xl={12}>
                       <Grid container>
                         <Grid item xs={12} md={10}>
-                          <Typography
-                            margin={'10px'}
-                            variant="h4"
-                            component="h4"
-                          >
-                            {isNull(
-                              searchParams.get('selectedFavoriteCityName')
-                            )
-                              ? `Tel Aviv `
-                              : searchParams.get(
-                                  'selectedFavoriteCityName'
-                                )}{' '}
-                            -{' '}
-                            {state.isCelsius
-                              ? convertNow(
-                                  'f',
-                                  meanTemp(
-                                    defaultWeather[0].Temperature!.Maximum
-                                      .Value,
-                                    defaultWeather[0].Temperature!.Minimum.Value
-                                  )
-                                )
-                              : convertNow(
-                                  'c',
-                                  meanTemp(
-                                    defaultWeather[0].Temperature!.Maximum
-                                      .Value,
-                                    defaultWeather[0].Temperature!.Minimum.Value
-                                  )
-                                )}
-                          </Typography>
+                          <Temperature
+                            text={
+                              isNull(
+                                searchParams.get('selectedFavoriteCityName')
+                              )
+                                ? `Tel Aviv `
+                                : searchParams.get('selectedFavoriteCityName')
+                            }
+                            temperature={defaultWeather[0].Temperature}
+                          ></Temperature>
                         </Grid>
                         <Grid item>
                           <FavoriteButton
@@ -286,23 +229,10 @@ export const Weather = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12} xl={12}>
-                              <Typography>
-                                {state.isCelsius
-                                  ? convertNow(
-                                      'f',
-                                      meanTemp(
-                                        day.Temperature!.Maximum.Value,
-                                        day.Temperature!.Minimum.Value
-                                      )
-                                    )
-                                  : convertNow(
-                                      'c',
-                                      meanTemp(
-                                        day.Temperature!.Maximum.Value,
-                                        day.Temperature!.Minimum.Value
-                                      )
-                                    )}
-                              </Typography>
+                              <Temperature
+                                textSize="h6"
+                                temperature={day.Temperature}
+                              ></Temperature>
                             </Grid>
                           </Grid>
                         </Card>

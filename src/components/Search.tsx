@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -31,10 +31,9 @@ interface Props {
 
 export default function SearchInput(props: Props) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  // const [data, setData] = useState<AutoComplete[]>([]);
   const [capture, setCapture] = useState<Capture>();
   const [input, setInput] = useState<string>('');
-  const { dispatch } = useContext(Store);
+
   const [searchParams, setSearchParams] = useSearchParams();
   //~~~~~~~~~~~~~~~~redux related
   const { data = [], isFetching, isError } = useFetchCitiesQuery(input);
@@ -69,6 +68,14 @@ export default function SearchInput(props: Props) {
     }
   }, 500);
 
+  const testInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    let res = /^[a-zA-Z ]+$/.test(e.key);
+    if (!res) {
+      return e.preventDefault();
+    }
+
+    onChangeInput(e);
+  };
   //snackbar button
   const action = (key: any) =>
     enqueueAction({ key: key, closeSnackbar: closeSnackbar });
@@ -116,7 +123,9 @@ export default function SearchInput(props: Props) {
           )}
           renderInput={(params) => (
             <TextField
-              onChange={onChangeInput}
+              onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) =>
+                testInput(e)
+              }
               {...params}
               label="Search location"
             />

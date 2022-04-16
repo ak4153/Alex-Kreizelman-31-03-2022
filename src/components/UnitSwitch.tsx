@@ -3,13 +3,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
 
-import { Store } from '../Store/Provider';
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
+import { useAppDispatch, useAppSelector } from '../Store/hooks';
+import { setUnit } from '../reduxSlices/isCelsiusSlice';
+
 export default function UnitSwitch() {
-  const { state, dispatch } = React.useContext(Store);
+  const isCelsius = useAppSelector((state) => state.isCelsius);
+  const dispatch = useAppDispatch();
 
   const handleDarkMode = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: 'SET_UNIT' });
+    // dispatch({ type: 'SET_UNIT' });
+    dispatch(setUnit());
   };
 
   return (
@@ -18,12 +22,12 @@ export default function UnitSwitch() {
         control={
           <Switch
             onChange={handleDarkMode}
-            checked={state.isCelsius}
+            checked={isCelsius.value}
             aria-label="unit switch"
           />
         }
         label={
-          state.isCelsius ? <DeviceThermostatIcon /> : <DeviceThermostatIcon />
+          isCelsius.value ? <DeviceThermostatIcon /> : <DeviceThermostatIcon />
         }
       />
     </FormGroup>
