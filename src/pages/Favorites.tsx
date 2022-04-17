@@ -22,7 +22,7 @@ export const Favorites = () => {
           >
             {favorites.length > 0 ? (
               favorites.map((fav: any) => (
-                <FavWeatherItem key={Math.random()} favorite={fav.key} />
+                <FavWeatherItem key={fav.key} favorite={fav.key} />
               ))
             ) : (
               <Grid item>
