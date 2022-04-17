@@ -11,7 +11,6 @@ import FormGroup from '@mui/material/FormGroup';
 
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { Store } from '../Store/Provider';
 import { Grid } from '@mui/material';
 import UnitSwitch from './UnitSwitch';
 
@@ -20,12 +19,10 @@ import { setDarkMode } from '../reduxSlices/darkModeSlices';
 import { useAppDispatch, useAppSelector } from '../Store/hooks';
 
 export const Navbar: React.FC = () => {
-  // const { state, dispatch } = React.useContext(Store);
   const darkMode = useAppSelector((state) => state.darkMode);
   const dispatch = useAppDispatch();
 
   const handleDarkMode = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // dispatch({ type: 'SET_DARKMODE' });
     dispatch(setDarkMode());
   };
 

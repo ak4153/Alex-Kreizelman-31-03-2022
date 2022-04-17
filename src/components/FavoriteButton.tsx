@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Store } from '../Store/Provider';
 
 //redux
 import { setFavorites } from '../reduxSlices/favoritesSlice';

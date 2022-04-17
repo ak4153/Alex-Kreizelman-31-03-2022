@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
 import { Grid, Typography } from '@mui/material';
-import { Store } from '../Store/Provider';
 import { FavWeatherItem } from '../components/FavWeatherItem';
 import { Link } from 'react-router-dom';
 

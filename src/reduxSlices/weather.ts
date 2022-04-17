@@ -22,6 +22,4 @@ export const autoCompleteApiSlice = createApi({
   },
 });
 
-//import in your component
-
 export const { useFetchCitiesQuery } = autoCompleteApiSlice;

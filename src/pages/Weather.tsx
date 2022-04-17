@@ -32,6 +32,7 @@ export const Weather = () => {
   const [defaultWeather, setDefaultWeather] = useState<DailyForecast[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   //axios get coords = success
+
   const success = (e: any) => {
     let latLng = { lat: e.coords.latitude, lng: e.coords.longitude };
     axios
