@@ -7,7 +7,6 @@ import { Button } from '@mui/material';
 import _, { isNull } from 'lodash';
 import urls from '../assets/urls.json';
 import { useSnackbar } from 'notistack';
-import { Store } from '../Store/Provider';
 
 //<Types>
 import { AutoComplete } from '../types/AutoCompleteType';
@@ -23,7 +22,6 @@ import { useFetchCitiesQuery } from '../reduxSlices/weather';
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
-const autocompleteUrl = `${baseUrl}/locations/v1/cities/autocomplete${apiKey}&q=`;
 
 interface Props {
   setCityWeather: Function;
