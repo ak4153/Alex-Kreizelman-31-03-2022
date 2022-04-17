@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../Store/hooks';
 interface Props {
   favorites?: any[];
   locationKey: number;
-  searchedCityWeather?: any;
+  newWeather?: any;
 }
 
 const FavoriteButton = (props: Props) => {

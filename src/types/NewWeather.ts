@@ -50,9 +50,13 @@ export interface DailyForecast {
   Link: string;
 }
 
-interface FivedayForeCast {
-  Headline: Headline | undefined;
-  DailyForecast: DailyForecast[];
+export interface ForeCast {
+  Headline: Headline;
+  DailyForecasts: DailyForecast[];
 }
 
-export default FivedayForeCast;
+export interface NewWeather {
+  foreCast: ForeCast;
+  key?: number;
+  city?: string;
+}

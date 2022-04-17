@@ -24,24 +24,20 @@ const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
 
 interface Props {
-  setSarchedCityWeather: Function;
+  newWeather: Function;
 }
 
 export default function SearchInput(props: Props) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [capture, setCapture] = useState<Capture>();
   const [input, setInput] = useState<string>('');
-
   const [searchParams, setSearchParams] = useSearchParams();
-  //~~~~~~~~~~~~~~~~redux related
   const { data = [], isFetching, isError } = useFetchCitiesQuery(input);
-
-  //~~~~~~~~~~~~~~~~redux related
 
   useEffect(() => {
     if (capture) {
       getRequest(forecastsUrl + capture.Key + apiKey, {
-        setData: props.setSarchedCityWeather,
+        setData: props.newWeather,
         action: action,
         enqueueSnackbar: enqueueSnackbar,
         page: 'searchComponent',
@@ -93,11 +89,9 @@ export default function SearchInput(props: Props) {
               ? data
               : [
                   {
-                    Country: {
-                      LocalizedName: isError
-                        ? 'Couldnt Fetch, check the apikey'
-                        : 'Type a city name...',
-                    },
+                    ErrorMessage: isError
+                      ? 'Couldnt Fetch, check the apikey'
+                      : 'Type a city name...',
                   },
                 ]
           }
@@ -107,16 +101,22 @@ export default function SearchInput(props: Props) {
           renderOption={(props: any, data: AutoComplete) => (
             <Button
               disabled={
-                data.Country.LocalizedName ===
-                  'Couldnt Fetch check the apikey' ||
-                data.Country.LocalizedName === 'Type a city name...'
+                data.ErrorMessage === 'Couldnt Fetch, check the apikey' ||
+                data.ErrorMessage === 'Type a city name...'
                   ? true
                   : false
               }
               {...props}
-              key={Math.random()}
+              key={
+                data.ErrorMessage
+                  ? data.ErrorMessage
+                  : `${data.Country.LocalizedName} - ${data.LocalizedName}`
+              }
             >
-              {data.Country.LocalizedName} - {data.LocalizedName}
+              {data.ErrorMessage
+                ? data.ErrorMessage
+                : `${data.Country.LocalizedName} - ${data.LocalizedName}`}
+              {/* {data.Country.LocalizedName} - {data.LocalizedName} */}
             </Button>
           )}
           renderInput={(params) => (

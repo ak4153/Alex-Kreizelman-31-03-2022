@@ -4,10 +4,10 @@ import Temperature from './Temperature';
 import FavoriteButton from './FavoriteButton';
 import WeatherIcon from './WeatherIcon';
 import getDayOfWeek from '../utils/getDayOfWeek';
-import { CityWeather } from '../types/CityWeather';
+import { NewWeather } from '../types/NewWeather';
 
 interface Props {
-  searchedCityWeather: CityWeather;
+  newWeather: NewWeather;
 }
 
 export default function SearchedCityWeather(props: Props) {
@@ -26,23 +26,22 @@ export default function SearchedCityWeather(props: Props) {
                 <Grid container>
                   <Grid item xs={12} md={10} xl={12}>
                     <Temperature
-                      text={props.searchedCityWeather.city}
+                      text={props.newWeather.city}
                       temperature={
-                        props.searchedCityWeather.foreCast.DailyForecasts[0]
-                          .Temperature
+                        props.newWeather.foreCast.DailyForecasts[0].Temperature
                       }
                     ></Temperature>
                   </Grid>
                   <Grid item>
                     <FavoriteButton
-                      locationKey={props.searchedCityWeather.key}
-                      searchedCityWeather={props.searchedCityWeather}
+                      locationKey={props.newWeather.key}
+                      newWeather={props.newWeather}
                     />
                   </Grid>
                 </Grid>
               </Grid>
 
-              {props.searchedCityWeather.foreCast.DailyForecasts.map(
+              {props.newWeather.foreCast.DailyForecasts.map(
                 (day: any, index: number) => (
                   <Grid xs={12} md={2} xl={2} item key={index}>
                     <Card sx={{ margin: '15px' }}>

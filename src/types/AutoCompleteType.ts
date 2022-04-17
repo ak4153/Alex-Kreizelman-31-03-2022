@@ -16,4 +16,5 @@ export interface AutoComplete {
   LocalizedName: string;
   Country: Country;
   AdministrativeArea: AdministrativeArea;
+  ErrorMessage?: 'Type a city name...' | 'Couldnt Fetch, check the apikey';
 }

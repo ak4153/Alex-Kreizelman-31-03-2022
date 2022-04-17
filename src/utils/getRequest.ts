@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { DailyForecast } from '../types/5dayForeCast';
+import { NewWeather } from '../types/NewWeather';
 import { Capture } from '../types/Capture';
 //types
 import Location from '../types/Location';
@@ -11,6 +11,7 @@ interface Options {
   intermidiate?: boolean;
   //city captured in fav screen and passed to weather screen
   capture?: Capture;
+  keyAndCity?: { key: number; city: string };
   page?:
     | 'favorites'
     | 'weather'
@@ -34,10 +35,14 @@ const getRequest = (url: string, options: Options) => {
         };
         return options.setData((prev: any) => (prev = dataToSave));
       }
-
       if (options.page === 'weather') {
+        const dataToSave = {
+          foreCast: res.data,
+          key: options.keyAndCity.key,
+          city: options.keyAndCity.city,
+        };
         return options.setData(
-          (prevState: DailyForecast) => (prevState = res.data.DailyForecasts)
+          (prevState: NewWeather) => (prevState = dataToSave)
         );
       }
 
