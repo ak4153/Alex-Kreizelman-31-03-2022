@@ -24,7 +24,7 @@ const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
 
 interface Props {
-  setCityWeather: Function;
+  setSarchedCityWeather: Function;
 }
 
 export default function SearchInput(props: Props) {
@@ -41,7 +41,7 @@ export default function SearchInput(props: Props) {
   useEffect(() => {
     if (capture) {
       getRequest(forecastsUrl + capture.Key + apiKey, {
-        setData: props.setCityWeather,
+        setData: props.setSarchedCityWeather,
         action: action,
         enqueueSnackbar: enqueueSnackbar,
         page: 'searchComponent',

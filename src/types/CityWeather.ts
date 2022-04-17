@@ -57,6 +57,6 @@ export interface ForeCast {
 
 export interface CityWeather {
   foreCast: ForeCast;
-  key: number;
-  city: string;
+  key?: number;
+  city?: string;
 }

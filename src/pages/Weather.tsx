@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 
 import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
-import { Card, Grid, Typography, CircularProgress } from '@mui/material';
+import { Grid, CircularProgress } from '@mui/material';
 import SearchInput from '../components/Search';
-import Temperature from '../components/Temperature';
-import getDayOfWeek from '../utils/getDayOfWeek';
-import WeatherIcon from '../components/WeatherIcon';
-import FavoriteButton from '../components/FavoriteButton';
+
+import DefaultWeather from '../components/DefaultWeather';
+import SearchedCityWeather from '../components/SearchedCityWeather';
 import axios from 'axios';
 import urls from '../assets/urls.json';
 
@@ -28,12 +27,12 @@ const getLocationUrl = `${baseUrl}/locations/v1/cities/geoposition/search${apiKe
 
 export const Weather = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [cityWeather, setCityWeather] = useState<CityWeather>();
-  const [defaultWeather, setDefaultWeather] = useState<DailyForecast[]>([]);
+  const [searchedCityWeather, setSarchedCityWeather] = useState<CityWeather>();
+  const [defaultWeather, setDefaultWeather] = useState<DailyForecast[]>();
   const [searchParams, setSearchParams] = useSearchParams();
   //axios get coords = success
 
-  const success = (e: any) => {
+  const success = (e: GeolocationPosition) => {
     let latLng = { lat: e.coords.latitude, lng: e.coords.longitude };
     axios
       .get(getLocationUrl + latLng.lat.toString() + ',' + latLng.lat.toString())
@@ -52,7 +51,7 @@ export const Weather = () => {
   };
 
   //axios get coords = fail
-  const fail = (e: any) => {
+  const fail = () => {
     getRequest(forecastsUrl + telAvivKey.toString() + apiKey, {
       setData: setDefaultWeather,
       action: action,
@@ -62,9 +61,7 @@ export const Weather = () => {
   };
 
   useEffect(() => {
-    //selectedFavorite
     if (!isNull(searchParams.get('selectedFavoriteKey'))) {
-      console.log(searchParams.get('selectedFavoriteCityName'));
       getRequest(
         forecastsUrl +
           searchParams.get('selectedFavoriteKey').toString() +
@@ -94,156 +91,20 @@ export const Weather = () => {
               marginBottom: '15px',
             }}
           >
-            <SearchInput setCityWeather={setCityWeather} />
+            <SearchInput setSarchedCityWeather={setSarchedCityWeather} />
           </Box>
         </Grid>
-
         <Grid item alignItems="flex-start" xs={12} md={6} xl={6}>
           <Clock />
         </Grid>
 
-        {!cityWeather && !defaultWeather ? (
+        {!searchedCityWeather && !defaultWeather ? (
           <CircularProgress color="success" />
-        ) : cityWeather ? (
+        ) : searchedCityWeather ? (
           // display searched weather
-          <Grid item xs={12} md={12} xl={12}>
-            <Grid container>
-              <Grid item xs={12} md={12} xl={12}>
-                <Card>
-                  <Grid
-                    container
-                    flexDirection="row"
-                    spacing={3}
-                    justifyContent="center"
-                  >
-                    <Grid item xs={12} md={12} xl={12}>
-                      <Grid container>
-                        <Grid item xs={12} md={10} xl={12}>
-                          <Temperature
-                            text={cityWeather.city}
-                            temperature={
-                              cityWeather.foreCast.DailyForecasts[0].Temperature
-                            }
-                          ></Temperature>
-                        </Grid>
-                        <Grid item>
-                          {/* change to primary on click */}
-                          <FavoriteButton
-                            locationKey={cityWeather.key}
-                            cityWeather={cityWeather}
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-
-                    {cityWeather.foreCast.DailyForecasts.map((day: any) => (
-                      <Grid xs={12} md={2} xl={2} item key={Math.random()}>
-                        <Card sx={{ margin: '15px' }}>
-                          <Grid
-                            container
-                            spacing={3}
-                            justifyContent="center"
-                            alignItems="center"
-                            flexDirection="column"
-                          >
-                            <Grid item xs={12} md={12} xl={12}>
-                              <Typography>{getDayOfWeek(day.Date)}</Typography>
-                            </Grid>
-
-                            <Grid item xs={12} md={12} xl={12}>
-                              <WeatherIcon weatherIcon={day.Day.Icon} />
-                            </Grid>
-
-                            <Grid item xs={12} md={12} xl={12}>
-                              <Temperature
-                                textSize="h6"
-                                temperature={day.Temperature}
-                              ></Temperature>
-                            </Grid>
-                          </Grid>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Card>
-              </Grid>
-            </Grid>
-          </Grid>
-        ) : defaultWeather.length < 1 ? (
-          ''
+          <SearchedCityWeather searchedCityWeather={searchedCityWeather} />
         ) : (
-          //display default weather if nothing searched
-
-          <Grid item xs={12} md={12} xl={12}>
-            <Grid container>
-              <Grid item xs={12} md={12} xl={12}>
-                <Card>
-                  <Grid
-                    container
-                    flexDirection="row"
-                    spacing={3}
-                    justifyContent="center"
-                  >
-                    <Grid item xs={12} md={12} xl={12}>
-                      <Grid container>
-                        <Grid item xs={12} md={10}>
-                          <Temperature
-                            text={
-                              isNull(
-                                searchParams.get('selectedFavoriteCityName')
-                              )
-                                ? `Tel Aviv `
-                                : searchParams.get('selectedFavoriteCityName')
-                            }
-                            temperature={defaultWeather[0].Temperature}
-                          ></Temperature>
-                        </Grid>
-                        <Grid item>
-                          <FavoriteButton
-                            locationKey={
-                              isNull(searchParams.get('selectedFavoriteKey'))
-                                ? telAvivKey
-                                : Number.parseInt(
-                                    searchParams.get('selectedFavoriteKey')
-                                  )
-                            }
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item> </Grid>
-                    <Grid xs={12} md={12} xl={12} item></Grid>
-                    {defaultWeather.map((day: any) => (
-                      <Grid xs={12} md={2} xl={2} item key={Math.random()}>
-                        <Card sx={{ margin: '15px' }}>
-                          <Grid
-                            container
-                            justifyContent="center"
-                            alignItems="center"
-                            flexDirection="column"
-                          >
-                            <Grid item xs={12} md={12} xl={12}>
-                              <WeatherIcon weatherIcon={day.Day.Icon} />
-                            </Grid>
-                            <Grid item xs={12} md={12} xl={12}>
-                              <Typography>{getDayOfWeek(day.Date)}</Typography>
-                            </Grid>
-
-                            <Grid item xs={12} md={12} xl={12}>
-                              <Temperature
-                                textSize="h6"
-                                temperature={day.Temperature}
-                              ></Temperature>
-                            </Grid>
-                          </Grid>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Card>
-              </Grid>
-            </Grid>
-          </Grid>
+          defaultWeather && <DefaultWeather defaultWeather={defaultWeather} />
         )}
       </Grid>
     </WeatherPageWrapper>
