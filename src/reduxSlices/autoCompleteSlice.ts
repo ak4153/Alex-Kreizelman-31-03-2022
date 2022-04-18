@@ -4,7 +4,6 @@ import urls from '../assets/urls.json';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
-const autocompleteUrl = `${baseUrl}/locations/v1/cities/autocomplete${apiKey}&q=`;
 
 export const autoCompleteApiSlice = createApi({
   reducerPath: 'autoCompleteApi',

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import ClockWrapper from '../styles/ClockWrapper';
 import { Typography } from '@mui/material';
+import ClockWrapper from '../styles/ClockWrapper';
 function Clock() {
   const [date, setDate] = useState<Date>(new Date());
 

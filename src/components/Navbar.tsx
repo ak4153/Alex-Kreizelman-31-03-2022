@@ -1,17 +1,18 @@
+//npm packages
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Switch from '@mui/material/Switch';
 import Toolbar from '@mui/material/Toolbar';
+import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
-import { NavBarWrapper, NavLinkWrapper } from '../styles/NavBarWrapper';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-
 import LightModeIcon from '@mui/icons-material/LightMode';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { Grid } from '@mui/material';
+//styles
+import { NavBarWrapper, NavLinkWrapper } from '../styles/NavBarWrapper';
+//utility functions
 import UnitSwitch from './UnitSwitch';
 
 //redux

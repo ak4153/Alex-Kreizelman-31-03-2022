@@ -1,116 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Grid, Typography } from '@mui/material';
-import WeatherIcon from './WeatherIcon';
-import getDayOfWeek from '../utils/getDayOfWeek';
-import FavoriteButton from './FavoriteButton';
-import enqueueAction from '../utils/enqueueAction';
-import urls from '../assets/urls.json';
-import { Link } from 'react-router-dom';
+//npm packages
+import React from 'react';
 import { useSnackbar } from 'notistack';
+import { Card, Grid, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+//assets
+import urls from '../assets/urls.json';
+//components
+import WeatherIcon from './WeatherIcon';
+import FavoriteButton from './FavoriteButton';
 import SkeletonLoad from '../components/Skeleton';
-import getRequest from '../utils/getRequest';
+//utility functions
 
+import enqueueAction from '../utils/enqueueAction';
+import getDayOfWeek from '../utils/getDayOfWeek';
 //types
-import Location from '../types/Location';
-import CurrentWeather from '../types/CurrentWeather';
+
 //redux
 import { useAppSelector } from '../Store/hooks';
+import { useFetchCurrentWeatherQuery } from '../reduxSlices/currentWeatherSlice';
+import { useFetchLocationQuery } from '../reduxSlices/locationApiSlice';
+//config
+// const apiKey = process.env.REACT_APP_API_KEY;
+// const baseUrl = urls.baseUrl;
+// const currentconditionsUrl = `${baseUrl}/currentconditions/v1/`;
+// const locationsUrl = `${baseUrl}/locations/v1/`;
 
-const apiKey = process.env.REACT_APP_API_KEY;
-const baseUrl = urls.baseUrl;
-const currentconditionsUrl = `${baseUrl}/currentconditions/v1/`;
-const locationsUrl = `${baseUrl}/locations/v1/`;
 interface Props {
   favorite: number;
 }
 export const FavWeatherItem = (props: Props) => {
-  const [location, setLocation] = useState<Location>();
-  const [currentWeather, setCurrentWeather] = useState<CurrentWeather>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const favorites = useAppSelector((state) => state.favorites);
+
   const isCelsius = useAppSelector((state) => state.isCelsius);
-  // const dipatch = useAppDispatch();
 
-  useEffect(() => {
-    if (props.favorite) {
-      getRequest(locationsUrl + props.favorite + apiKey, {
-        enqueueSnackbar: enqueueSnackbar,
-        action: action,
-        setData: setLocation,
-        page: 'favweatheritemComponent_setLocation',
-      });
-      getRequest(currentconditionsUrl + props.favorite + apiKey, {
-        enqueueSnackbar: enqueueSnackbar,
-        action: action,
-        setData: setCurrentWeather,
-        page: 'favweatheritemComponent',
-      });
-    }
-  }, []);
+  const fetchLocationData = useFetchLocationQuery(props.favorite);
+  var fetchCurrentWeatherData = { data: null, isSuccess: false };
+  ({
+    data: fetchCurrentWeatherData.data,
+    isSuccess: fetchCurrentWeatherData.isSuccess,
+  } = useFetchCurrentWeatherQuery(props.favorite, {
+    skip: !fetchLocationData.isSuccess,
+  }));
 
-  const onLinkClick = () => {
-    // dispatch({
-    //   type: 'SELECT_FAVORITE',
-    //   payload: { key: props.favorite, locationName: location.LocalizedName },
-    // });
-    // dipatch(
-    //   setFavorites({
-    //     key: props.favorite,
-    //     locationName: location.LocalizedName,
-    //   })
-    // );
-  };
-
-  const action = (key: any) =>
+  const action = (key: number) =>
     enqueueAction({ key: key, closeSnackbar: closeSnackbar });
 
   return (
     <Grid item xs={6} md={5} xl={5}>
-      {currentWeather && location ? (
+      {fetchLocationData.isError &&
+        enqueueSnackbar('Error fetching, check api key', {
+          action,
+          preventDuplicate: true,
+        }) &&
+        console.clear()}
+      {fetchCurrentWeatherData.isSuccess && fetchLocationData.isSuccess ? (
         <Card>
           <Grid container spacing={3} justifyContent="center">
             <Grid item xs={12} md={6} xl={6}>
               <Typography margin="10px" variant="h5" component="h5">
-                {location.LocalizedName} - {props.favorite}
+                {fetchLocationData.data.LocalizedName} - {props.favorite}
               </Typography>
             </Grid>
-
             <Grid item xs={8} md={6}>
               <FavoriteButton locationKey={props.favorite} />
             </Grid>
             <Grid item>
               <Link
-                to={`/?selectedFavoriteKey=${props.favorite}&selectedFavoriteCityName=${location.LocalizedName}`}
-                onClick={onLinkClick}
+                to={`/?selectedFavoriteKey=${props.favorite}&selectedFavoriteCityName=${fetchLocationData.data.LocalizedName}`}
               >
                 <Typography textAlign="center">Forecast</Typography>
               </Link>
             </Grid>
             <Grid item xs={12} md={12}>
               <Typography textAlign="center">
-                {getDayOfWeek(currentWeather.LocalObservationDateTime)}
+                {getDayOfWeek(
+                  fetchCurrentWeatherData.data[0].LocalObservationDateTime
+                )}
               </Typography>
 
               <Grid xs={12} md={12} xl={12} item>
                 <Typography textAlign={'center'}>
-                  <WeatherIcon weatherIcon={currentWeather.WeatherIcon} />
+                  <WeatherIcon
+                    weatherIcon={fetchCurrentWeatherData.data[0].WeatherIcon}
+                  />
                 </Typography>
               </Grid>
 
               <Grid xs={12} md={12} xl={12} item>
                 <Typography textAlign={'center'}>
                   {!isCelsius.value
-                    ? `${currentWeather.Temperature.Metric.Value}°C`
-                    : `${currentWeather.Temperature.Imperial.Value}°F`}
+                    ? `${fetchCurrentWeatherData.data[0].Temperature.Metric.Value}°C`
+                    : `${fetchCurrentWeatherData.data[0].Temperature.Imperial.Value}°F`}
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
         </Card>
-      ) : favorites.length < 1 ? (
-        <Grid item xs={8} md={8}>
-          <Typography margin="10px" variant="h5" component="h5"></Typography>)
-        </Grid>
       ) : (
         <SkeletonLoad />
       )}

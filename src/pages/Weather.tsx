@@ -1,24 +1,28 @@
+//npm packages
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-
-import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useSearchParams } from 'react-router-dom';
 import { Grid, CircularProgress } from '@mui/material';
-import SearchInput from '../components/Search';
-
-import SearchedCityWeather from '../components/SearchedCityWeather';
-import axios, { AxiosResponse, AxiosResponseHeaders } from 'axios';
-import urls from '../assets/urls.json';
-
-import Clock from '../components/TickingClock';
+import Box from '@mui/material/Box';
 import { useSnackbar } from 'notistack';
+import { isNull } from 'lodash';
+//assets
+import urls from '../assets/urls.json';
+//components
+import SearchedCityWeather from '../components/SearchedCityWeather';
+import Clock from '../components/TickingClock';
+import SearchInput from '../components/Search';
+//styles
+import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
+//utility functions
 import showSnackBar from '../utils/showSnackBar';
-import { NewWeather } from '../types/NewWeather';
-import Location from '../types/Location';
-
 import enqueueAction from '../utils/enqueueAction';
 import getRequest from '../utils/getRequest';
-import { useSearchParams } from 'react-router-dom';
-import { isNull } from 'lodash';
+//types
+import Location from '../types/Location';
+import { NewWeather } from '../types/NewWeather';
+import { useGeoLocation } from '../hooks/useGeoLocation';
+//config
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
@@ -27,44 +31,12 @@ const getLocationUrl = `${baseUrl}/locations/v1/cities/geoposition/search${apiKe
 
 export const Weather = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [newWeather, setNewWeather] = useState<NewWeather>();
-  //axios get coords = success
-  const success = (e: GeolocationPosition) => {
-    let latLng = { lat: e.coords.latitude, lng: e.coords.longitude };
-    axios
-      .get(getLocationUrl + latLng.lat.toString() + ',' + latLng.lng.toString())
-      .then((res: AxiosResponse<Location>) => {
-        getRequest(forecastsUrl + res.data.Key + apiKey, {
-          setData: setNewWeather,
-          action: action,
-          enqueueSnackbar: enqueueSnackbar,
-          page: 'weather',
-          keyAndCity: {
-            key: +res.data.Key,
-            city: res.data.LocalizedName,
-          },
-        });
-      })
-      .catch((err) => {
-        console.clear();
-        showSnackBar(enqueueSnackbar, action, err.message);
-      });
-  };
-
-  //axios get coords = fail
-  const fail = () => {
-    getRequest(forecastsUrl + telAvivKey.toString() + apiKey, {
-      setData: setNewWeather,
-      action: action,
-      enqueueSnackbar: enqueueSnackbar,
-      page: 'weather',
-      keyAndCity: { key: 215854, city: 'Tel Aviv' },
-    });
-  };
-
+  const { geoLocation } = useGeoLocation();
   useEffect(() => {
-    if (!isNull(searchParams.get('selectedFavoriteKey'))) {
+    let searchParamsHolder = searchParams.get('selectedFavoriteKey');
+    if (!isNull(searchParamsHolder) && searchParamsHolder) {
       getRequest(
         forecastsUrl +
           searchParams.get('selectedFavoriteKey').toString() +
@@ -81,13 +53,45 @@ export const Weather = () => {
         }
       );
     } else {
-      navigator.geolocation.getCurrentPosition(success, fail);
+      if (geoLocation) {
+        axios
+          .get(
+            getLocationUrl +
+              geoLocation.coords.latitude.toString() +
+              ',' +
+              geoLocation.coords.latitude.toString()
+          )
+          .then((res: AxiosResponse<Location>) => {
+            getRequest(forecastsUrl + res.data.Key + apiKey, {
+              setData: setNewWeather,
+              action: action,
+              enqueueSnackbar: enqueueSnackbar,
+              page: 'weather',
+              keyAndCity: {
+                key: +res.data.Key,
+                city: res.data.LocalizedName,
+              },
+            });
+          })
+          .catch((err: AxiosError) => {
+            console.clear();
+            showSnackBar(enqueueSnackbar, action, err.message);
+          });
+      } else
+        getRequest(forecastsUrl + telAvivKey.toString() + apiKey, {
+          setData: setNewWeather,
+          action: action,
+          enqueueSnackbar: enqueueSnackbar,
+          page: 'weather',
+          keyAndCity: { key: 215854, city: 'Tel Aviv' },
+        });
     }
-  }, []);
+  }, [geoLocation]);
 
   //snackbar popup action
-  const action = (key: any) =>
-    enqueueAction({ key: key, closeSnackbar: closeSnackbar });
+  const action = (key: number) => {
+    return enqueueAction({ key: key, closeSnackbar: closeSnackbar });
+  };
 
   return (
     <WeatherPageWrapper>

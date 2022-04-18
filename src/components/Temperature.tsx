@@ -1,6 +1,9 @@
+//npm packages
 import React from 'react';
 import { Typography } from '@mui/material';
+//utility functions
 import { meanTemp, convertNow } from '../utils/tempConversion';
+//redux
 import { useAppSelector } from '../Store/hooks';
 interface Props {
   temperature: any;

@@ -1,13 +1,16 @@
+//npm packages
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Favorites } from './pages/Favorites';
-import { Weather } from './pages/Weather';
-
 import { SnackbarProvider } from 'notistack';
+import ReactDOM from 'react-dom';
 import Grow from '@material-ui/core/Grow';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+//styles
+import './index.css';
+//pages
+import { Favorites } from './pages/Favorites';
+import App from './App';
+import { Weather } from './pages/Weather';
+//redux
 import { Provider } from 'react-redux';
 import { store } from './Store/reduxjsStore';
 ReactDOM.render<React.FC>(

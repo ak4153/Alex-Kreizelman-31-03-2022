@@ -1,13 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { autoCompleteApiSlice } from '../reduxSlices/weather';
+import { autoCompleteApiSlice } from '../reduxSlices/autoCompleteSlice';
 import darkModeReducer from '../reduxSlices/darkModeSlices';
 import favoritesReducer from '../reduxSlices/favoritesSlice';
 import isCelsiusReducer from '../reduxSlices/isCelsiusSlice';
+import { locationApiSlice } from '../reduxSlices/locationApiSlice';
+import { currentWeatherApiSlice } from '../reduxSlices/currentWeatherSlice';
 //redux store
 export const store = configureStore({
   reducer: {
     //[]=>state.autoCompleteApiSlice - field
     [autoCompleteApiSlice.reducerPath]: autoCompleteApiSlice.reducer,
+    [locationApiSlice.reducerPath]: locationApiSlice.reducer,
+    [currentWeatherApiSlice.reducerPath]: currentWeatherApiSlice.reducer,
     //after this import in component
     darkMode: darkModeReducer,
     favorites: favoritesReducer,
@@ -18,7 +22,11 @@ export const store = configureStore({
   //invalidation, subscriptions,
   //polling, and more. Add this to the store setup after other middleware.
   middleware: (getDefaultMiddleWare) => {
-    return getDefaultMiddleWare().concat(autoCompleteApiSlice.middleware);
+    return getDefaultMiddleWare().concat(
+      autoCompleteApiSlice.middleware,
+      currentWeatherApiSlice.middleware,
+      locationApiSlice.middleware
+    );
   },
 });
 

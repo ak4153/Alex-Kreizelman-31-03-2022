@@ -1,9 +1,11 @@
 import React from 'react';
 import { Card, Grid, Typography } from '@mui/material';
+//components
 import Temperature from './Temperature';
 import FavoriteButton from './FavoriteButton';
 import WeatherIcon from './WeatherIcon';
 import getDayOfWeek from '../utils/getDayOfWeek';
+//types
 import { NewWeather } from '../types/NewWeather';
 
 interface Props {

@@ -1,6 +1,6 @@
 import Skeleton from '@mui/material/Skeleton';
-
 import Grid from '@mui/material/Grid';
+
 export default function SkeletonLoad() {
   return (
     <Grid container spacing={5} justifyContent="center">

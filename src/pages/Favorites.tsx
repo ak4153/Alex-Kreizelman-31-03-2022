@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
-import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
+//npm packages
 import { Grid, Typography } from '@mui/material';
-import { FavWeatherItem } from '../components/FavWeatherItem';
 import { Link } from 'react-router-dom';
-
+//styles
+import { WeatherPageWrapper } from '../styles/WeatherPageWrapper';
+//components
+import { FavWeatherItem } from '../components/FavWeatherItem';
 //redux
 import { useAppSelector } from '../Store/hooks';
-import { setFavorites } from '../reduxSlices/favoritesSlice';
 export const Favorites = () => {
-  // const { state, dispatch } = useContext(Store);
   const favorites = useAppSelector((state) => state.favorites);
   return (
     <WeatherPageWrapper>
@@ -27,7 +26,7 @@ export const Favorites = () => {
             ) : (
               <Grid item>
                 <Typography>
-                  Empty.. <Link to="/">Make it full :)</Link>
+                  So Empty... <Link to="/">Make it full :)</Link>
                 </Typography>
               </Grid>
             )}

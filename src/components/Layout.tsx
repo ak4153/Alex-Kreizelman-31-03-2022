@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Footer } from './Footer';
-import { Navbar } from './Navbar';
-
 import { Grid } from '@mui/material';
+//styles
 import { LayoutWrapper } from '../styles/LayoutWrapper';
-
+//components
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
 //redux
 import { useAppDispatch, useAppSelector } from '../Store/hooks';
 

@@ -1,24 +1,24 @@
+//npm packages
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
-
 import { Button } from '@mui/material';
 import _, { isNull } from 'lodash';
-import urls from '../assets/urls.json';
 import { useSnackbar } from 'notistack';
-
-//<Types>
+import { useSearchParams } from 'react-router-dom';
+//assets
+import urls from '../assets/urls.json';
+//Types
 import { AutoComplete } from '../types/AutoCompleteType';
 import { Capture } from '../types/Capture';
-//</Types>
+//utils
 import getRequest from '../utils/getRequest';
 import enqueueAction from '../utils/enqueueAction';
 import showSnackBar from '../utils/showSnackBar';
-import { useSearchParams } from 'react-router-dom';
-//<redux >
-import { useFetchCitiesQuery } from '../reduxSlices/weather';
-//</redux>
+//redux
+import { useFetchCitiesQuery } from '../reduxSlices/autoCompleteSlice';
+
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 const forecastsUrl = `${baseUrl}/forecasts/v1/daily/5day/`;
@@ -32,9 +32,10 @@ export default function SearchInput(props: Props) {
   const [capture, setCapture] = useState<Capture>();
   const [input, setInput] = useState<string>('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data = [], isFetching, isError } = useFetchCitiesQuery(input);
+  const { data = [], isError } = useFetchCitiesQuery(input);
 
   useEffect(() => {
+    //handles the rendering of the searched item
     if (capture) {
       getRequest(forecastsUrl + capture.Key + apiKey, {
         setData: props.newWeather,
@@ -62,6 +63,7 @@ export default function SearchInput(props: Props) {
     }
   }, 500);
 
+  //blocks all non alphanumeric input
   const testInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let res = /^[a-zA-Z ]+$/.test(e.key);
     if (!res) {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+//npm packages
 import { Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -14,16 +14,11 @@ interface Props {
 
 const FavoriteButton = (props: Props) => {
   const { locationKey } = props;
-  // const { state, dispatch } = useContext(Store);
-
-  //redux
   const dispatch = useAppDispatch();
   const favorites = useAppSelector((state) => state.favorites);
-
   const handleAddToFav = () => {
     dispatch(setFavorites({ key: +locationKey }));
   };
-
   return (
     <Button>
       <FavoriteIcon
