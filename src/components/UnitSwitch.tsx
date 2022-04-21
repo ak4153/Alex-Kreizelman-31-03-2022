@@ -13,7 +13,6 @@ export default function UnitSwitch() {
   const dispatch = useAppDispatch();
 
   const handleDarkMode = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // dispatch({ type: 'SET_UNIT' });
     dispatch(setUnit());
   };
 

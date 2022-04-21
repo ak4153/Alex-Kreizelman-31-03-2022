@@ -20,10 +20,6 @@ import { useAppSelector } from '../Store/hooks';
 import { useFetchCurrentWeatherQuery } from '../reduxSlices/currentWeatherSlice';
 import { useFetchLocationQuery } from '../reduxSlices/locationApiSlice';
 //config
-// const apiKey = process.env.REACT_APP_API_KEY;
-// const baseUrl = urls.baseUrl;
-// const currentconditionsUrl = `${baseUrl}/currentconditions/v1/`;
-// const locationsUrl = `${baseUrl}/locations/v1/`;
 
 interface Props {
   favorite: number;
@@ -35,6 +31,7 @@ export const FavWeatherItem = (props: Props) => {
 
   const fetchLocationData = useFetchLocationQuery(props.favorite);
   var fetchCurrentWeatherData = { data: null, isSuccess: false };
+
   ({
     data: fetchCurrentWeatherData.data,
     isSuccess: fetchCurrentWeatherData.isSuccess,

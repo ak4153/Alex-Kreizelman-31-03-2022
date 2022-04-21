@@ -22,6 +22,8 @@ import getRequest from '../utils/getRequest';
 import Location from '../types/Location';
 import { NewWeather } from '../types/NewWeather';
 import { useGeoLocation } from '../hooks/useGeoLocation';
+//redux
+
 //config
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
@@ -33,10 +35,13 @@ export const Weather = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [searchParams] = useSearchParams();
   const [newWeather, setNewWeather] = useState<NewWeather>();
+
   const { geoLocation } = useGeoLocation();
+
   useEffect(() => {
     let searchParamsHolder = searchParams.get('selectedFavoriteKey');
     if (!isNull(searchParamsHolder) && searchParamsHolder) {
+      //weather from favorite page
       getRequest(
         forecastsUrl +
           searchParams.get('selectedFavoriteKey').toString() +
@@ -54,12 +59,13 @@ export const Weather = () => {
       );
     } else {
       if (geoLocation) {
+        //weather by Coords
         axios
           .get(
             getLocationUrl +
               geoLocation.coords.latitude.toString() +
               ',' +
-              geoLocation.coords.latitude.toString()
+              geoLocation.coords.longitude.toString()
           )
           .then((res: AxiosResponse<Location>) => {
             getRequest(forecastsUrl + res.data.Key + apiKey, {
@@ -77,7 +83,9 @@ export const Weather = () => {
             console.clear();
             showSnackBar(enqueueSnackbar, action, err.message);
           });
-      } else
+      }
+      //default weather
+      else
         getRequest(forecastsUrl + telAvivKey.toString() + apiKey, {
           setData: setNewWeather,
           action: action,

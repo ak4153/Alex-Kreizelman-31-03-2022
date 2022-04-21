@@ -13,7 +13,6 @@ interface Props {
 }
 export const Layout: React.FC<Props> = ({ children, title }) => {
   const darkMode = useAppSelector((state) => state.darkMode);
-  const dispatch = useAppDispatch();
   useEffect(() => {
     document.title = title;
   }, []);
