@@ -5,7 +5,6 @@ import favoritesReducer from '../reduxSlices/favoritesSlice';
 import isCelsiusReducer from '../reduxSlices/isCelsiusSlice';
 import { locationApiSlice } from '../reduxSlices/locationApiSlice';
 import { currentWeatherApiSlice } from '../reduxSlices/currentWeatherSlice';
-import { geoPositionLocationSlice } from '../reduxSlices/geoPositionLocationSllice';
 //redux store
 export const store = configureStore({
   reducer: {
@@ -13,7 +12,6 @@ export const store = configureStore({
     [autoCompleteApiSlice.reducerPath]: autoCompleteApiSlice.reducer,
     [locationApiSlice.reducerPath]: locationApiSlice.reducer,
     [currentWeatherApiSlice.reducerPath]: currentWeatherApiSlice.reducer,
-    [geoPositionLocationSlice.reducerPath]: geoPositionLocationSlice.reducer,
     //after this import in component
     darkMode: darkModeReducer,
     favorites: favoritesReducer,
@@ -27,8 +25,7 @@ export const store = configureStore({
     return getDefaultMiddleWare().concat(
       autoCompleteApiSlice.middleware,
       currentWeatherApiSlice.middleware,
-      locationApiSlice.middleware,
-      geoPositionLocationSlice.middleware
+      locationApiSlice.middleware
     );
   },
 });

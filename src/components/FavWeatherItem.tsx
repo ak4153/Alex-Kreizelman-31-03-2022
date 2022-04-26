@@ -1,10 +1,10 @@
 //npm packages
-import React from 'react';
+
 import { useSnackbar } from 'notistack';
 import { Card, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 //assets
-import urls from '../assets/urls.json';
+
 //components
 import WeatherIcon from './WeatherIcon';
 import FavoriteButton from './FavoriteButton';

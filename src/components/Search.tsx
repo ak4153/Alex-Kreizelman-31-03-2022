@@ -1,5 +1,5 @@
 //npm packages
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -34,6 +34,23 @@ export default function SearchInput(props: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data = [], isError } = useFetchCitiesQuery(input);
 
+  const onChangeInput = useMemo(
+    () =>
+      _.debounce((e) => {
+        let res = /^[a-zA-Z ]+$/.test(e.target.value);
+        if (res) {
+          return setInput(e.target.value);
+        } else {
+          return showSnackBar(
+            enqueueSnackbar,
+            action,
+            'English letters please'
+          );
+        }
+      }, 500),
+    []
+  );
+
   useEffect(() => {
     //handles the rendering of the searched item
     if (capture) {
@@ -47,6 +64,13 @@ export default function SearchInput(props: Props) {
     }
   }, [capture]);
 
+  //cleanup of debounce
+  useEffect(() => {
+    return () => {
+      onChangeInput.cancel();
+    };
+  }, []);
+
   const handleClick = (event: any, value: any, reason: any) => {
     if (reason === 'selectOption') {
       setCapture(value);
@@ -54,24 +78,15 @@ export default function SearchInput(props: Props) {
     }
   };
 
-  const onChangeInput = _.debounce((e) => {
-    let res = /^[a-zA-Z ]+$/.test(e.target.value);
-    if (res) {
-      return setInput(e.target.value);
-    } else {
-      return showSnackBar(enqueueSnackbar, action, 'English letters please');
-    }
-  }, 500);
-
   //blocks all non alphanumeric input
   const testInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let res = /^[a-zA-Z ]+$/.test(e.key);
     if (!res) {
       return e.preventDefault();
     }
-
     onChangeInput(e);
   };
+
   //snackbar button
   const action = (key: any) =>
     enqueueAction({ key: key, closeSnackbar: closeSnackbar });
@@ -118,7 +133,6 @@ export default function SearchInput(props: Props) {
               {data.ErrorMessage
                 ? data.ErrorMessage
                 : `${data.Country.LocalizedName} - ${data.LocalizedName}`}
-              {/* {data.Country.LocalizedName} - {data.LocalizedName} */}
             </Button>
           )}
           renderInput={(params) => (
