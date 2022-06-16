@@ -18,6 +18,7 @@ import enqueueAction from '../utils/enqueueAction';
 import showSnackBar from '../utils/showSnackBar';
 //redux
 import { useFetchCitiesQuery } from '../reduxSlices/autoCompleteSlice';
+import axios from 'axios';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
@@ -53,6 +54,7 @@ export default function SearchInput(props: Props) {
 
   useEffect(() => {
     //handles the rendering of the searched item
+    const controller = new AbortController();
     if (capture) {
       getRequest(forecastsUrl + capture.Key + apiKey, {
         setData: props.newWeather,
@@ -60,8 +62,12 @@ export default function SearchInput(props: Props) {
         enqueueSnackbar: enqueueSnackbar,
         page: 'searchComponent',
         capture: capture,
+        cancelToken: controller.signal,
       });
     }
+    return () => {
+      controller.abort();
+    };
   }, [capture]);
 
   //cleanup of debounce
@@ -78,12 +84,7 @@ export default function SearchInput(props: Props) {
     }
   };
 
-  //blocks all non alphanumeric input
   const testInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    let res = /^[a-zA-Z ]+$/.test(e.key);
-    if (!res) {
-      return e.preventDefault();
-    }
     onChangeInput(e);
   };
 

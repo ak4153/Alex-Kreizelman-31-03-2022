@@ -50,6 +50,7 @@ export const FavWeatherItem = (props: Props) => {
           preventDuplicate: true,
         }) &&
         console.clear()}
+
       {fetchCurrentWeatherData.isSuccess && fetchLocationData.isSuccess ? (
         <Card>
           <Grid container spacing={3} justifyContent="center">

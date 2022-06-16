@@ -84,7 +84,7 @@ export const Weather = () => {
             showSnackBar(enqueueSnackbar, action, err.message);
           });
       }
-      //default weather
+      //default weather - tel aviv
       else
         getRequest(forecastsUrl + telAvivKey.toString() + apiKey, {
           setData: setNewWeather,

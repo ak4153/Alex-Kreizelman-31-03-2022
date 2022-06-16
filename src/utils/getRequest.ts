@@ -18,6 +18,7 @@ interface Options {
     | 'searchComponent'
     | 'favweatheritemComponent'
     | 'favweatheritemComponent_setLocation';
+  cancelToken?: any;
 }
 
 /**
@@ -25,7 +26,7 @@ interface Options {
  */
 const getRequest = (url: string, options: Options) => {
   axios
-    .get(url)
+    .get(url, { signal: options.cancelToken })
     .then((res) => {
       if (options.page === 'searchComponent') {
         const dataToSave = {

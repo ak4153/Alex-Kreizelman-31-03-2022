@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { AutoComplete } from '../types/AutoCompleteType';
 import urls from '../assets/urls.json';
-
+import axios from 'axios';
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = urls.baseUrl;
 
